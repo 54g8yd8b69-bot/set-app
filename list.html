@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dental Set-App set-up list</title>
+<style>
+:root{--navy:#22343D;--teal:#0B827E;--teal2:#8AD3CE;--bg:#FAFCFC;--card:#fff;--ink:#2A3A43;--mute:#6A7C87;--line:#E9EFF2;--shadow:0 1px 2px rgba(34,52,61,.04);--hdr:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--navy:#E8F1F4;--teal:#3CC4BC;--teal2:#2BB3AC;--bg:#0D1317;--card:#151D22;--ink:#E8F1F4;--mute:#97A8B2;--line:#27343B;--shadow:0 1px 3px rgba(0,0,0,.5);--hdr:#151D22}}
+:root[data-theme="dark"]{--navy:#E8F1F4;--teal:#3CC4BC;--teal2:#2BB3AC;--bg:#0D1317;--card:#151D22;--ink:#E8F1F4;--mute:#97A8B2;--line:#27343B;--shadow:0 1px 3px rgba(0,0,0,.5);--hdr:#151D22}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+h1,h2{font-family:inherit;font-weight:600;margin:0;line-height:1.25}
+header{background:var(--hdr);color:var(--ink);padding:16px 18px;border-bottom:1px solid var(--line)}
+header small{color:var(--teal);font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:.75rem}
+header h1{color:var(--navy);font-size:1.4rem;margin-top:4px}
+header p{margin:6px 0 0;color:var(--mute);font-size:.95rem}
+main{max-width:640px;margin:0 auto;padding:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px 16px;margin-bottom:14px}
+h2{font-size:1.1rem;color:var(--navy);padding-bottom:4px;border-bottom:2px solid var(--teal2)}
+ul{list-style:none;margin:0;padding:0}
+li label{display:flex;gap:12px;align-items:center;padding:11px 2px;border-bottom:1px solid var(--line);min-height:48px;cursor:pointer}
+li:last-child label{border-bottom:0}
+.pnl{display:none}.pnl.on{display:block}
+#list.single .pnl{display:block}
+.sw{flex:none;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(0,0,0,.25);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+li input{width:24px;height:24px;accent-color:var(--teal);flex:none}
+li.done span{text-decoration:line-through;color:var(--mute)}
+.prog{color:var(--mute);font-size:.95rem;margin:0 0 12px}
+.msg{color:var(--mute);text-align:center;padding:28px 8px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;border:1px solid var(--teal);background:transparent;color:var(--teal);border-radius:10px;font-weight:500;padding:10px 14px;min-height:44px;cursor:pointer}
+:focus-visible{outline:3px solid var(--teal2);outline-offset:2px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+header{animation:fadeUp .3s ease both}
+main .card{animation:fadeUp .4s ease both}
+main .card:nth-child(2){animation-delay:.06s}main .card:nth-child(3){animation-delay:.12s}main .card:nth-child(4){animation-delay:.18s}main .card:nth-child(n+5){animation-delay:.24s}
+li span{transition:color .25s}
+.tabs{display:flex;gap:4px;margin:0 0 12px;border-bottom:2px solid var(--line);overflow-x:auto}
+.tabs button{border:0;border-bottom:3px solid transparent;margin-bottom:-2px;background:none;color:var(--mute);border-radius:0;padding:8px 14px;min-height:44px;font-weight:500;white-space:nowrap}
+.tabs button.on{color:var(--teal);border-bottom-color:var(--teal);font-weight:700}
+.pm{color:var(--mute);font-size:.95rem;margin:0 0 10px}
+li input.pop{animation:pop .24s ease}
+button{transition:transform .12s,background-color .2s}
+button:active{transform:scale(.97)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media print{.tabs{display:none}.pnl{display:block!important;break-after:page}header{background:#fff;color:#000}header h1{color:#000}.btns{display:none}body{background:#fff}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<header>
+  <small>Dental Set-App</small>
+  <h1 id="title">Set-up list</h1>
+  <p id="meta"></p>
+</header>
+<main>
+  <div class="tabs" id="tabs" role="tablist" hidden></div>
+  <p class="prog" id="prog"></p>
+  <div id="list"></div>
+  <div class="btns" id="btns" hidden>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="reset">Clear ticks</button>
+  </div>
+</main>
+<script>
+var $=function(i){return document.getElementById(i)},K="",ticks={};
+var ISOC={pink:["#F4A6C0","#3A1A26"],grey:["#9AA3A8","#fff"],purple:["#8E5BB5","#fff"],white:["#FFFFFF","#2A3A43","#9AA8B1"],yellow:["#F2C811","#3A3000"],red:["#D8392F","#fff"],blue:["#2F6FD0","#fff"],green:["#2E9A4F","#fff"],black:["#2B2B2B","#fff"]};
+var ISOSEQ={6:"pink",8:"grey",10:"purple",15:"white",20:"yellow",25:"red",30:"blue",35:"green",40:"black",45:"white",50:"yellow",55:"red",60:"blue",70:"green",80:"black"};
+var ROTC={"ProTaper Gold S1":"purple","ProTaper Gold S2":"white","ProTaper Gold F1":"yellow","ProTaper Gold F2":"red","ProTaper Gold F3":"blue","ProTaper Gold F4":"black","ProTaper Gold F5":"yellow","Reciproc R25":"red","Reciproc R40":"black","Reciproc R50":"yellow","WaveOne Gold Small":"yellow","WaveOne Gold Primary":"red","WaveOne Gold Medium":"green","WaveOne Gold Large":"white"};
+function fileCol(t){t=String(t).replace(/ · .*$/,"");var m=/^(?:K file|Hedstrom file|C\+ file) ISO (\d+)/.exec(t)||/^ISO (\d+) master GP cone/.exec(t),k;if(m)k=ISOSEQ[+m[1]];else k=ROTC[t.replace(/ (?:master GP cone|paper points)$/,"").replace(/ \([\d + ]+ mm\)$/,"")];return k&&ISOC[k]?ISOC[k]:null}
+function swatch(t){var c=fileCol(t);return c?'<i class="sw" style="background:'+c[0]+(c[2]?';border-color:'+c[2]:'')+'"></i>':""}
+function el(t,c,s){var e=document.createElement(t);if(c)e.className=c;if(s!==undefined)e.textContent=s;return e}
+function fmt(d){if(!d)return"";var x=new Date(d+"T12:00");return isNaN(x)?String(d):x.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short",year:"numeric"})}
+function key(h){var n=5381;for(var i=0;i<h.length;i++)n=((n<<5)+n+h.charCodeAt(i))|0;return"ticks:"+(n>>>0)}
+function rd(k){try{return JSON.parse(localStorage.getItem(k)||"{}")||{}}catch(e){return{}}}
+function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function bytes(t){t=t.replace(/-/g,"+").replace(/_/g,"/");while(t.length%4)t+="=";var x=atob(t),a=new Uint8Array(x.length);for(var i=0;i<x.length;i++)a[i]=x.charCodeAt(i);return a}
+async function decode(h){var b=bytes(h.slice(1));if(h[0]==="u")return new TextDecoder().decode(b);if(h[0]==="c"){var s=new DecompressionStream("deflate-raw"),w=s.writable.getWriter();w.write(b);w.close();return new TextDecoder().decode(await new Response(s.readable).arrayBuffer())}throw new Error("v")}
+function msg(t){$("list").textContent="";$("list").appendChild(el("p","msg",t));$("btns").hidden=true;$("prog").textContent="";$("title").textContent="Set-up list";$("meta").textContent=""}
+function count(){var all=document.querySelectorAll("#list .pnl.on input, #list.single input"),n=0;all.forEach(function(c){if(c.checked)n++});$("prog").textContent=n+" of "+all.length+" ticked"}
+var PA=0;
+function secCards(sections,pi,parent){sections.forEach(function(sec,i){var items=Array.isArray(sec[1])?sec[1]:[];if(!items.length)return;
+  var card=el("section","card"),ul=el("ul");card.appendChild(el("h2","",String(sec[0])+" ("+items.length+")"));
+  items.forEach(function(t,j){var id=(pi===null?"":pi+":")+i+"-"+j,li=el("li"),lb=el("label"),cb=el("input"),sp=el("span","",String(t)),c=fileCol(String(t)),sw=null;if(c){sw=el("i","sw");sw.style.background=c[0];if(c[2])sw.style.borderColor=c[2]}cb.type="checkbox";cb.checked=!!ticks[id];li.className=cb.checked?"done":"";
+   cb.onchange=function(){cb.classList.remove("pop");void cb.offsetWidth;cb.classList.add("pop");ticks[id]=cb.checked;li.className=cb.checked?"done":"";wr(K,ticks);count()};
+   lb.appendChild(cb);if(sw)lb.appendChild(sw);lb.appendChild(sp);li.appendChild(lb);ul.appendChild(li)});
+  card.appendChild(ul);parent.appendChild(card)})}
+function setTab(i){PA=i;document.querySelectorAll("#list .pnl").forEach(function(p,j){p.classList.toggle("on",j===i)});document.querySelectorAll("#tabs button").forEach(function(b,j){b.classList.toggle("on",j===i);b.setAttribute("aria-selected",j===i)});count()}
+async function show(){var h=(location.hash||"").slice(1),d;$("tabs").hidden=true;$("list").className="";
+ if(!h){msg("Scan a QR code from Dental Set-App to see a set-up list here.");return}
+ try{d=JSON.parse(await decode(h));if(!Array.isArray(d)||!(d[0]==="@p"?Array.isArray(d[3]):Array.isArray(d[5])))throw new Error("f")}catch(e){msg("This code couldn’t be read. It may be from an older version, so please ask for a new one.");return}
+ K=key(h);ticks=rd(K);var out=$("list");out.textContent="";
+ if(d[0]==="@p"){$("title").textContent="Set-up lists";$("meta").textContent=[d[2]&&"Clinician: "+d[2],fmt(d[1])].filter(Boolean).join(" · ");
+  var tb=$("tabs");tb.textContent="";tb.hidden=false;PA=0;
+  d[3].forEach(function(pt,i){var b=el("button","",String(pt[0]||"Patient "+(i+1)));b.type="button";b.setAttribute("role","tab");b.onclick=function(){setTab(i)};tb.appendChild(b);
+   var pn=el("div","pnl");pn.appendChild(el("p","pm",[pt[1],pt[2]&&"System: "+pt[2],pt[3]&&"Room: "+pt[3]].filter(Boolean).join(" · ")));secCards(Array.isArray(pt[4])?pt[4]:[],i,pn);out.appendChild(pn)});
+  $("btns").hidden=false;setTab(0);return}
+ $("title").textContent=String(d[0]||"Set-up list");
+ $("meta").textContent=[d[1]&&"System: "+d[1],d[2]&&"Clinician: "+d[2],fmt(d[3]),d[4]&&"Room: "+d[4]].filter(Boolean).join(" · ");
+ out.className="single";secCards(d[5],null,out);
+ $("btns").hidden=false;count()}
+$("print").onclick=function(){window.print()};
+$("reset").onclick=function(){ticks={};wr(K,ticks);show()};
+window.addEventListener("hashchange",show);
+show();
+</script>
+</body>
+</html>

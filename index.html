@@ -1,0 +1,662 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- v2: merged onto live version; single-page editor, QR opens list page -->
+<title>Dental Set-App</title>
+<style>
+:root{--navy:#22343D;--teal:#0B827E;--teal2:#8AD3CE;--bg:#FAFCFC;--card:#fff;--ink:#2A3A43;--mute:#6A7C87;--line:#E9EFF2;--sel:#EEF8F7;--shadow:0 1px 2px rgba(34,52,61,.04);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--navy:#E8F1F4;--teal:#3CC4BC;--teal2:#2BB3AC;--bg:#0D1317;--card:#151D22;--ink:#E8F1F4;--mute:#97A8B2;--line:#27343B;--sel:#12363A;--shadow:0 1px 3px rgba(0,0,0,.5)}}
+:root[data-theme="dark"]{--navy:#E8F1F4;--teal:#3CC4BC;--teal2:#2BB3AC;--bg:#0D1317;--card:#151D22;--ink:#E8F1F4;--mute:#97A8B2;--line:#27343B;--sel:#12363A;--shadow:0 1px 3px rgba(0,0,0,.5)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+h1,h2,h3{font-family:inherit;font-weight:600;color:var(--navy);margin:0;line-height:1.25}
+header{background:var(--card);color:var(--ink);padding:16px 20px;border-bottom:1px solid var(--line)}
+header h1{color:var(--navy);font-size:1.4rem;font-weight:600;letter-spacing:-.01em}
+header p{margin:4px 0 0;color:var(--mute);max-width:60ch}
+main{max-width:760px;margin:0 auto;padding:16px 16px 104px;display:grid;gap:16px;align-items:start}
+@media (max-width:820px){main{grid-template-columns:1fr}}
+.pick{display:grid;gap:16px}
+#menus{display:grid;gap:16px}#menus:empty{display:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:20px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+label.f{display:block;font-size:.85rem;color:var(--mute)}
+input[type=text],input[type=date],select{width:100%;margin-top:3px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--teal2);outline-offset:2px}
+h2{font-size:1.15rem;margin-bottom:4px}
+.sub{color:var(--mute);font-size:.9rem;margin:0 0 10px}
+.items{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.items label{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer;min-height:44px}
+.items label:has(input:checked){background:var(--sel);border-color:var(--teal2)}
+.items input{width:20px;height:20px;accent-color:var(--teal);flex:none}
+.items li.withnote{display:flex;gap:8px}.items li.withnote label{flex:1}.items li.withnote input.note{width:8em;height:auto;margin:0;align-self:stretch}
+.items .cathead{margin:12px 0 0;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+.items .cathead:first-child{margin-top:0}
+.subs{display:flex;flex-wrap:wrap;gap:6px;padding:6px 0 2px 28px}
+.subs label{min-height:40px;padding:6px 12px}
+.subs .sub{flex-basis:100%;margin:2px 0 0}
+.subs .grp{margin:8px 0 0;font-weight:500;color:var(--ink)}
+#qrbox{margin-top:14px;text-align:center}
+#qrimg svg{width:min(280px,100%);height:auto;border-radius:6px;border:1px solid var(--line)}
+.fgroup+.fgroup{margin-top:18px}
+.fhead{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.fhead h3{font-size:1rem}
+.fhead select{width:auto;min-width:7em}
+.fsub{margin:18px 0 0;font-size:1rem;padding-top:14px;border-top:1px solid var(--line)}
+.fper{margin-top:10px}.fp-h{margin:0 0 4px;font-size:.85rem;font-weight:600}.fp-h span{font-weight:400;color:var(--mute)}
+.fprow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0;border-top:1px solid var(--line)}
+.fprow.ov{background:var(--sel);border-radius:8px;padding:4px 6px}
+.fpn{min-width:8.5em;font-size:.9rem;font-weight:500}
+.fpr{min-height:36px;padding:4px 10px;font-size:.8rem}
+.lenrow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.85rem;color:var(--mute)}
+.lenrow label{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;min-height:40px;border:1px solid var(--line);border-radius:8px;cursor:pointer;color:var(--ink)}
+.lenrow label:has(input:checked){background:var(--sel);border-color:var(--teal)}
+.lenrow input{width:18px;height:18px;accent-color:var(--teal)}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
+.chips.wide{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.chips label{display:flex;gap:6px;align-items:center;justify-content:center;padding:8px 6px;border:1px solid var(--line);border-radius:8px;cursor:pointer;min-height:44px;text-align:center}
+.chips label:has(input:checked){background:var(--sel);border-color:var(--teal2)}
+.chips label.full{grid-column:1/-1}
+.chips label:has(input[data-n="none"]){grid-column:1/-1}
+.chips .sys{grid-column:1/-1;font-size:.85rem;color:var(--mute);margin-top:4px}
+.chips input{width:18px;height:18px;accent-color:var(--teal)}
+.auto{margin:10px 0 0}
+.add{display:flex;gap:8px;margin-top:10px}
+.add input{margin:0}
+button{font:inherit;font-weight:500;border:0;border-radius:10px;padding:10px 14px;cursor:pointer;background:var(--teal);color:#fff;min-height:44px}
+button.sec{background:transparent;color:var(--teal);border:1px solid var(--teal)}
+.sheet{position:static}
+@media (max-width:820px){.sheet{position:static}}
+.meta{font-size:.9rem;color:var(--mute);margin:0 0 10px;min-height:1.4em}
+.sheet h3{font-size:1rem;margin:12px 0 6px;padding-bottom:3px;border-bottom:2px solid var(--teal2)}
+.sheet ul{list-style:none;margin:0;padding:0}
+.sheet li{display:flex;gap:10px;align-items:center;padding:5px 0;border-bottom:1px dotted var(--line)}
+.sw{flex:none;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(0,0,0,.25);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet li .rmx{margin-left:auto;flex:none;min-height:36px;min-width:36px;padding:0 8px;background:none;color:var(--mute);border:1px solid transparent;border-radius:8px;font-size:1.2rem;line-height:1}
+.sheet li .rmx:hover,.sheet li .rmx:focus-visible{color:#B3261E;border-color:var(--line)}
+.sheet .freeadd{display:flex;gap:8px;margin-top:16px}.sheet .freeadd input{flex:1;min-width:0}.sheet .freeadd button{flex:none;min-height:44px;padding:6px 14px}
+@media print{.freeadd{display:none!important}}
+.sheet .removed{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.85rem;color:var(--mute)}
+.sheet .removed button{min-height:34px;padding:4px 10px;font-size:.8rem}
+.sheet li input{width:18px;height:18px;accent-color:var(--teal)}
+.sheet li:has(input:checked) span{text-decoration:line-through;color:var(--mute)}
+.empty{color:var(--mute);font-style:italic}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.note{display:none;font-size:.8rem;color:var(--mute);max-width:1100px;margin:0 auto;padding:0 16px 24px}
+.stp,#menus.stp{display:none}
+body[data-cur="details"] .stp-details{display:block}
+body[data-cur="core"] .stp-core{display:block}
+body[data-cur="opt"] .stp-opt{display:block}
+body[data-cur="review"] .stp-review{display:block}
+body[data-cur="review"] .note{display:block}
+body[data-cur="menus"] #menus.stp-menus{display:grid}
+body[data-cur="menus"] section.stp-menus{display:block}
+#stepTitle{font-size:1.3rem;outline:none}
+.steps{max-width:760px;margin:0 auto;padding:12px 16px 0}
+.steps ol{list-style:none;display:flex;gap:6px;margin:0;padding:0}
+.steps li{--bc:color-mix(in srgb,#0B7A76 calc(var(--t,0)*100%),#8FD9D2);flex:1;min-width:0;border-top:5px solid var(--bc);border-radius:3px;padding-top:3px;transition:border-width .2s,padding .2s}
+.steps li.share{--bc:#3E9B5F}
+.steps li.cur{border-top-width:8px;padding-top:0}
+.steps button{width:100%;background:none;color:var(--mute);border-radius:0;padding:6px 2px;min-height:40px;font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.steps li.done button{color:var(--ink)}
+.steps li.cur button{color:var(--navy);font-weight:700}
+.wizbar{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -2px 10px rgba(11,46,74,.1);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.wizbar>div{max-width:728px;margin:0 auto;display:flex;gap:10px;justify-content:space-between;align-items:center}
+.wizbar .mid{color:var(--mute);font-size:.9rem}
+.wizbar button{min-width:100px}
+button:disabled{opacity:.45;cursor:default}
+.chips label.fc{--fb:var(--fc);background:color-mix(in srgb,var(--fc) 26%,var(--card));border-color:color-mix(in srgb,var(--fb) 70%,var(--line));font-weight:500}
+.chips label.fc:hover{border-color:var(--fb)}
+.chips label.fc:has(input:checked){background:var(--fc);color:var(--fk);border-color:var(--fb);box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--fb)}
+.chips label.fc input{accent-color:var(--fk)}
+.chips label.fc.rb{color:var(--teal);font-weight:600}
+.chips label.fc.rb:has(input:checked){background:var(--teal);color:var(--card);box-shadow:0 0 0 2px var(--card),0 0 0 5px var(--fc)}
+.chips label.fc.rb input{accent-color:var(--teal)}
+.chips label.fc.rb:has(input:checked) input{accent-color:var(--card)}
+.items li[style*="--cc"]>label{border-left:5px solid var(--cc)}
+.items li[style*="--cc"]>label:has(input:checked){background:color-mix(in srgb,var(--cc) 14%,var(--card));border-color:var(--cc)}
+.items li[style*="--cc"]>label input{accent-color:var(--cc)}
+.items .cathead::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--cc);margin-right:8px}
+.items .cathead{color:var(--cc)}
+.card[style*="--cc"]>h2{border-bottom-color:var(--cc)}
+.chips.cc label:has(input:checked){background:color-mix(in srgb,var(--cc) 16%,var(--card));border-color:var(--cc)}
+.chips.cc input{accent-color:var(--cc)}
+.chips.cc label.sg{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);background:var(--sel)}
+.sgm{font-style:normal;color:var(--teal);font-size:.8rem}
+.sgt{color:var(--teal);font-weight:600}
+.chips.cc label{border-top:3px solid color-mix(in srgb,var(--cc) 65%,var(--line))}
+.chips label.fc input{flex:none;margin:0}
+.chips label.fc{gap:4px;padding:8px 4px;min-width:0}
+.visit{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 12px}
+.visit .vp{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--card);overflow:hidden}
+.visit .vp button.vn{border:0;background:none;color:var(--ink);padding:6px 12px;min-height:36px;font-size:.88rem;border-radius:0}
+.visit .vp.on{background:var(--sel);border-color:var(--teal)}
+.visit .vp.on button.vn{font-weight:700;color:var(--teal)}
+.visit .vp button.vx{border:0;background:none;color:var(--mute);padding:6px 10px 6px 0;min-height:36px;font-size:1rem;line-height:1;border-radius:0}
+.visit button.va{border:1px dashed var(--teal);background:none;color:var(--teal);border-radius:999px;padding:6px 12px;min-height:36px;font-size:.88rem}
+body[data-cur="review"] #pbar{display:none}
+.pbar .vp.pt{border-radius:8px}
+.pbar button.va{border-radius:8px}
+.ptabs{display:flex;gap:4px;margin:0 0 12px;border-bottom:2px solid var(--line);overflow-x:auto}
+.ptabs button{border:0;border-bottom:3px solid transparent;margin-bottom:-2px;background:none;color:var(--mute);border-radius:0;padding:8px 14px;min-height:40px;font-weight:500;white-space:nowrap}
+.ptabs button.on{color:var(--teal);border-bottom-color:var(--teal);font-weight:700}
+.sheet .pl{display:none}.sheet .pl.on{display:block}
+div.f{font-size:.85rem;color:var(--mute)}
+.toothbtn{display:block;width:100%;margin-top:4px;text-align:left;font-size:1rem;padding:9px 12px}
+.toothbtn.has{background:var(--sel);font-weight:600}
+dialog#toothDlg{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:20px;width:min(720px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+dialog#toothDlg::backdrop{background:rgba(20,30,36,.5)}
+dialog#toothDlg[open]{animation:stepIn .22s ease both}
+#toothDlg h2{border:0;padding:0;margin:0 0 4px}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.tgrid .qd{padding:8px 5px;min-width:0}
+.tgrid .q0,.tgrid .q2{border-right:2px solid var(--line);padding-left:0}
+.tgrid .q1,.tgrid .q3{padding-right:0}
+.tgrid .q0,.tgrid .q1{border-bottom:2px solid var(--line)}
+.tgrid .q0 .qh,.tgrid .q2 .qh{text-align:right}
+@media (min-width:640px){.tgrid .qd{padding:10px 12px}.tgrid .q0,.tgrid .q2{padding-left:0}.tgrid .q1,.tgrid .q3{padding-right:0}}
+.tq .qh{font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:0 0 6px}
+.tq .row{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:2px}
+.tq button.t{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;padding:0;min-height:54px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;font-weight:600}
+.tq button.t small{font-size:.55rem;line-height:1;font-weight:600;color:var(--mute)}
+.tq button.t span{font-size:1rem;line-height:1}
+.tq button.t.up{border-top:3px solid var(--teal2)}
+.tq button.t.lo{border-bottom:3px solid var(--teal2)}
+.tq button.t[aria-pressed="true"]{background:var(--teal);color:#fff;border-color:var(--teal)}
+.tq button.t[aria-pressed="true"] small{color:#fff}
+@media (max-width:639px){dialog#toothDlg{width:calc(100vw - 12px);padding:14px 10px}}
+@media (min-width:640px){.tq .row{gap:3px}.tq button.t{flex-direction:row;gap:1px;min-height:44px;border-radius:8px}.tq button.t small,.tq button.t span{font-size:.85rem;color:inherit}}
+.tbtns{margin-top:16px;justify-content:flex-end}
+.hrow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;max-width:760px;margin:0 auto}
+.hrow button{flex:none;font-size:.85rem;padding:8px 12px;min-height:40px}
+dialog#edDlg{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:18px;width:min(760px,calc(100vw - 12px));max-height:calc(100vh - 16px);overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+dialog#edDlg::backdrop{background:rgba(20,30,36,.5)}
+dialog#edDlg[open]{animation:stepIn .22s ease both}
+#edDlg h2{border:0;padding:0;margin:0 0 4px}
+#edDlg h3{font-size:1rem;margin:16px 0 6px}
+#edDlg select,#edDlg input[type=text],#edDlg textarea{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.edrow{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.edrow .edmeta{grid-column:1/-1;display:flex;gap:8px;align-items:center;font-size:.8rem;color:var(--mute)}
+.edrow .edmeta select{width:auto;padding:4px 8px;font-size:.8rem}
+.edrow button{min-height:40px;padding:6px 10px;font-size:.85rem}
+.edrow button[data-edrm]{background:#C62828;border-color:#C62828;color:#fff}
+.edrow button[data-edrm]:hover,.edrow button[data-edrm]:focus-visible{background:#A81E1E;border-color:#A81E1E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .edrow button[data-edrm]{background:#E57373;border-color:#E57373;color:#2A0A0A}}
+.edrow input[readonly]{background:var(--sel);color:var(--mute)}
+.edadd{display:grid;grid-template-columns:1fr;gap:8px;margin-top:6px}
+.edmore{margin-top:16px}.edmore summary{cursor:pointer;font-weight:600;color:var(--teal);padding:6px 0}
+.edmore .btns{margin:8px 0}
+@keyframes stepIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes reveal{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+.stp-details,.stp-core,.stp-opt,.stp-review,#menus>.card,#filesCard,#conesCard{animation:stepIn .32s ease both}
+.subs:not([hidden]){animation:reveal .22s ease both}
+#qrbox:not([hidden]){animation:reveal .3s ease both}
+.sheet li{animation:fadeUp .35s ease both;animation-delay:calc(var(--i,0)*22ms)}
+input.pop{animation:pop .24s ease}
+.items label,.chips label{transition:background-color .2s,border-color .2s}
+.items label:hover,.chips label:hover{border-color:var(--teal2)}
+
+button{transition:transform .12s,background-color .2s,opacity .2s}
+button:active:not(:disabled){transform:scale(.97)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{.rmx,.removed{display:none!important}#toothDlg,#edDlg,#edBtn{display:none!important}.sheet .pl{display:block!important;break-after:page}.sheet .pl:last-child{break-after:auto}.ptabs,.visit,#addproc,#addpt,header,.pick,.btns,.note,#qrbox,.steps,.wizbar,#stepTitle,#stepMsg{display:none!important}.stp-review{display:block!important}main{display:block;padding:0}.card{box-shadow:none;padding:0}.sheet{position:static}body{background:#fff;color:#000}.sheet h3{color:#000}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow"><div><h1>Dental Set-App</h1>
+  <p>Choose the procedure, adjust the equipment, and send the nurse a tick-off list.</p></div>
+  <button type="button" class="sec" id="edBtn">Edit equipment</button></div>
+</header>
+<nav class="steps" id="steps" aria-label="Progress"></nav>
+<main>
+  <div class="visit" id="visit"></div>
+  <div class="visit pbar" id="pbar"></div>
+  <h2 id="stepTitle" tabindex="-1"></h2>
+  <p class="sub" id="stepMsg" role="alert" hidden></p>
+  <div class="pick">
+    <section class="card stp stp-details">
+      <div class="fields">
+        <label class="f">Procedure
+          <select id="proc"></select></label>
+        <div class="f" id="toothWrap"><span>Tooth</span>
+          <button type="button" class="sec toothbtn" id="toothBtn">Select tooth</button></div>
+        <label class="f">Clinician
+          <input type="text" id="who" placeholder="Name"></label>
+        <label class="f">Date
+          <input type="date" id="date"></label>
+        <label class="f">Room or chair
+          <input type="text" id="room" placeholder="e.g. Chair 4"></label>
+        <label class="f" id="sysWrap" hidden>Implant system
+          <select id="sys"></select></label>
+      </div>
+    </section>
+    <section class="card stp stp-core">
+      <h2>Standard equipment</h2>
+      <p class="sub">Pre-selected for this procedure. Untick anything not needed.</p>
+      <ul class="items" id="core"></ul>
+    </section>
+    <section class="card stp stp-opt">
+      <h2>Also available</h2>
+      <p class="sub">Tick anything extra you want set up.</p>
+      <ul class="items" id="opt"></ul>
+      <form class="add" id="addform" onsubmit="return false">
+        <input type="text" id="custom" placeholder="Something else, e.g. patient’s own bite registration" aria-label="Add another item">
+        <button type="button" id="addbtn">Add item</button>
+      </form>
+    </section>
+    <div id="menus" class="stp stp-menus"></div>
+    <section class="card stp stp-menus" id="filesCard" hidden></section>
+    <section class="card stp stp-menus" id="conesCard" hidden></section>
+  </div>
+  <aside class="card sheet stp stp-review" aria-live="polite">
+    <h2>Nurse set-up list</h2>
+    <div class="ptabs" id="ptabs" role="tablist" hidden></div>
+    <p class="meta" id="meta" hidden></p>
+    <div id="out"></div>
+    <div class="btns">
+      <button type="button" id="print">Print list</button>
+      <button type="button" class="sec" id="copy">Copy as text</button>
+      <button type="button" class="sec" id="wa">Share on WhatsApp</button>
+      <button type="button" class="sec" id="qrbtn">Show QR code</button>
+      <button type="button" class="sec" id="addproc">+ Add another procedure</button>
+      <button type="button" class="sec" id="addpt">+ Add another patient</button>
+      <button type="button" class="sec" id="reset">Reset</button>
+    </div>
+    <div id="qrbox" hidden>
+      <div id="qrimg"></div>
+      <p class="sub" id="qrmsg"></p>
+      <button type="button" class="sec" id="qrcopy">Copy text</button>
+    </div>
+  </aside>
+</main>
+<dialog id="toothDlg" aria-labelledby="toothTitle">
+  <h2 id="toothTitle">Select tooth</h2>
+  <p class="sub">Palmer notation, as you face the patient (patient’s right on the left). Tap one or more teeth.</p>
+  <div class="tq" id="toothGrid"></div>
+  <div class="btns tbtns"><button type="button" class="sec" id="toothClear">Clear</button><button type="button" id="toothDone">Done</button></div>
+</dialog>
+<dialog id="edDlg" aria-labelledby="edTitle">
+  <h2 id="edTitle">Edit equipment</h2>
+  <p class="sub">Change what each procedure lists. Saved on this device in this browser, so use Copy backup to move your changes to another device.</p>
+  <label class="f">Procedure <select id="edProc"></select></label>
+  <div id="edBody"></div>
+  <details class="edmore"><summary>Backup and reset</summary>
+    <div class="btns"><button type="button" class="sec" id="edCopy">Copy backup</button><button type="button" class="sec" id="edResetP">Reset this procedure</button><button type="button" class="sec" id="edResetAll">Reset everything</button></div>
+    <label class="f">Restore from backup<textarea id="edRestore" rows="3" placeholder="Paste a backup here"></textarea></label>
+    <div class="btns"><button type="button" class="sec" id="edLoad">Restore</button></div>
+    <p class="sub" id="edMsg" role="status"></p>
+  </details>
+  <div class="btns tbtns"><button type="button" id="edDone">Done</button></div>
+</dialog>
+<div class="wizbar"><div><button type="button" class="sec" id="back">Back</button><span class="mid" id="stepCount"></span><button type="button" id="next">Next</button></div></div>
+<p class="note">Item lists are starting templates. Check them against your own department’s protocols and local infection control policy before use.</p>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+var LISTURL="https://claude.ai/artifact/CFt2aoPd2jFufyRncad73e";
+var REMOVED=["Lip lubricant","Impression disinfectant and lab bag","Curing light and shield","Cotton rolls and gauze","Photography equipment","Lab prescription form","Disclosing wax","Denture cleaner","Implant analogues"];
+var EXAM="Exam kit",REST="Restorative kit",ENDO="Endodontic kit",RD="Rubber dam kit",HS="Fast handpiece",SS="Slow-speed handpiece",AP="Articulating paper",BB="Bite block",SH="Shade guide";
+var LAC=["LA cartridges","Topical anaesthetic"];
+var FITX=["PTFE tape","Ultrasonic scaler","Alginate"];
+var SUBS={
+"LA cartridges":{o:[["Lidocaine","Lidocaine LA cartridges"],["Articaine","Articaine LA cartridges"],["Long needle","Long needle",1],["Short needle","Short needle",1]]},
+"Genial Injection Moulding Composite":{o:["A1","A2","A3","A3.5","A4","B1","B2","B3","C2","D2"].map(function(x){return[x,"Genial injection moulding composite shade "+x,0,"Shade"]})},
+"Retraction cord":{o:["000","00","0","1","2","3"].map(function(x){return[x,"Retraction cord "+x]})},
+"Composite":{o:[["Packable","Packable composite"],["SDR","SDR composite"]].concat(["A1","A2","A3","A3.5","A4","B1","B2","B3","C2","D2"].map(function(x){return[x,"Composite shade "+x,1,"Shade"]})),note:"Selecting composite also adds etch, bond and flowable composite."}
+};
+var NOTED={"Impression copings":"Size","Scan body":"Size","Parapost Fibre Lux post":"Size","Parapost drills":"Size"},NOTEDC={"Parapost Fibre Lux post":1,"Parapost drills":1};
+var P={
+"Root canal treatment: first stage":{files:1,clampAlways:1,m:["clamp"],c:LAC.concat([ENDO,RD,"OpalDam",HS,SS,"Endo motor and handpiece","Access bur kit","Piezo and tips","Apex locator","Endo ruler and file sponge","Irrigation syringes","Floss","Sodium hypochlorite","EDTA","Paper points","Calcium hydroxide (intracanal medicament)"]),o:["GIC","IRM","Cavit","Chlorhexidine","Etch and bond",BB,"GP Master Cones","PTFE tape","Wooden wedges","Omni-Matrix","Sectional matrix (Palodent V3)"]},
+"Root canal treatment: obturation":{files:1,cones:1,clampAlways:1,m:["clamp"],c:[ENDO,RD,"OpalDam",HS,SS,"Endo motor and handpiece","Piezo and tips","Apex locator","Endo ruler and file sponge","Irrigation syringes","Sodium hypochlorite","EDTA","Paper points","Alpha, Beta and GP capsules","AH Plus sealer and mixing pad","Machtou plugger"],o:LAC.concat(["MTA putty","MTA powder and liquid","Warm vertical compaction system","GIC","IRM","Cavit","Etch and bond",BB,"PTFE tape","Wooden wedges","Omni-Matrix","Sectional matrix (Palodent V3)"])},
+"Direct composite restoration":{m:["clamp"],c:LAC.concat([REST,HS,SS,"Burs: round and tapered fissure",AP,"Finishing burs and polishing discs"]),o:[RD,"Composite","Flowable composite","Omni-Matrix","Sectional matrix (Palodent V3)","Wooden wedges","PTFE tape","Interdental polishing strips","IPR strips","Retraction cord","Putty","Mylar strip (clear strip)","Memosil","Genial Injection Moulding Composite",BB]},
+"Onlay preparation":{m:["mats","temps","clamp"],c:LAC.concat([REST,HS,SS,"Onlay preparation burs","Etch and bond","Composite or glass ionomer (core build-up)","Retraction cord","Impression trays",SH,AP]),o:["Intraoral scanner",RD,"Flowable composite","Omni-Matrix","Sectional matrix (Palodent V3)","Wooden wedges","PTFE tape",BB,"Biodentine"]},
+"Crown preparation":{m:["mats","temps"],c:LAC.concat([REST,HS,SS,"Crown prep burs","Retraction cord","Impression trays",SH,AP]),o:["Intraoral scanner",RD,"Core build-up material","Provisional crown shell",BB,"Biodentine"]},
+"Resin bonded bridge preparation":{m:["mats","temps"],c:LAC.concat([REST,HS,SS,"Preparation burs (wing, rest seat and grooves)","Retraction cord","Impression trays",SH,AP]),o:["Intraoral scanner","Putty index or prep guide","Study casts",RD,"Temporary pontic or Essix retainer",BB,"Biodentine"]},
+"Onlay fit":{m:["cems","clamp"],c:[REST,"Onlay and lab work (checked against notes)",RD,"Floss",AP,SS],o:LAC.concat(["Wooden wedges","Adjustment burs"],FITX)},
+"Crown fit":{m:["cems","clamp"],c:[REST,"Crown and lab work (checked against notes)","Cement mixing pad","Floss",AP,SS],o:LAC.concat([RD,"Adjustment burs"],FITX)},
+"Conventional bridge fit":{m:["cems","clamp"],c:[REST,"Bridge and lab work (checked against notes)","Cement mixing pad","Floss",AP,SS],o:LAC.concat([RD,"Adjustment burs"],FITX)},
+"Resin bonded bridge fit":{m:["cems","clamp"],c:[REST,"Resin bonded bridge and lab work (checked against notes)","OptraGate","Metal or zirconia primer","Floss","Superfloss",AP,SS],o:LAC.concat([RD,"Pumice and prophy cup","Glycerine gel (oxygen inhibition)","Wooden wedges","Adjustment burs"],FITX)},
+"Primary impressions":{m:["mats"],matx:1,def:[["mats","alg"]],c:[EXAM,"Stock trays (range of sizes)","Mixing bowl","Straight handpiece","Impression disinfectant and lab bag"],o:["Lip lubricant","Patient mirror","Intraoral scanner"]},
+"Secondary impressions":{m:["mats"],matx:1,c:[EXAM,"Special trays (checked against lab card)","Heat source (water bath)","Mixing pad or bowl",SS+" and acrylic burs (tray adjustment)","Straight handpiece","Impression disinfectant and lab bag"],o:["Pressure indicating paste","Lip lubricant","Patient mirror"]},
+"Jaw registration":{c:[EXAM,"Labwork","Hot plate","Wax knife","No flame / Bunsen burner","Pink wax","Bite registration silicone",SH+" and mould guide","Patient mirror","Impression disinfectant and lab bag"],o:["Face bow","Gothic arch tracing device","Fox’s Bite Plane","Articulator",SS+" and acrylic burs","Willis bite gauge","Pressure indicating paste"]},
+"Metal framework try-in":{c:[EXAM,"Labwork","Pressure indicating paste",AP,"Patient mirror",SS+" and acrylic burs"],o:["Bite registration silicone","Pink wax",SH+" and mould guide","Light body silicone","Wax knife","No flame","Straight handpiece",HS,"Occlude Spray"]},
+"Wax try-in":{c:[EXAM,"Labwork","Pink wax","Patient mirror",SH+" and mould guide",AP,"Straight handpiece","Impression disinfectant and lab bag"],o:["Bite registration silicone","Face bow","Gothic arch tracing device","Lip lubricant","Pressure indicating paste","No flame","Light body silicone",HS,"Occlude Spray"]},
+"Denture fit":{c:[EXAM,"Labwork","Pressure indicating paste",AP,SS+" and acrylic burs","Patient mirror","Denture care and advice leaflet","Impression disinfectant and lab bag"],o:["Light body silicone","Denture adhesive","Tissue conditioner","Chairside polishing kit","Occlusal indicator wax"]},
+"Denture review":{c:[EXAM,"Pressure indicating paste",AP,SS+" and acrylic burs","Patient mirror","Denture care and advice leaflet"],o:["Light body silicone","Hard reline","Tissue conditioner","Soft reline material","Denture adhesive","Impression material and trays"]},
+"Implant impressions":{m:["mats"],def:[["mats","imp"]],c:[EXAM,"Impression trays",SH],o:["Impression copings"].concat(LAC,["Scan body","Intraoral scanner","Light cure resin and floss (to splint copings)",BB])},
+"Implant provisional fit":{c:[EXAM,"Labwork","Floss",AP,SS,"Fast handpiece","Fine polishing burs"],o:LAC.concat(["Replacement healing abutment","Temporary cement","Adjustment burs","Scalpel",BB])},
+"Implant definitive crown fit":{c:[EXAM,"Labwork","Floss",AP,SS,"Fast handpiece","Fine polishing burs"],o:LAC.concat(["Cement and mixing pad (if cement retained)","Replacement healing abutment","Adjustment burs",SH,BB,"Scalpel"])},
+"Fibre post (Parapost Fibre Lux)":{m:["cems","clamp"],clampAlways:1,c:LAC.concat([REST,RD,HS,SS,"Parapost Fibre Lux kit","Parapost drills","Parapost Fibre Lux post","Irrigation syringes","Sodium hypochlorite","Paper points","Etch and bond","Core build-up material"]),o:["Heated plugger (GP removal)","Gates Glidden drills","Piezo and tips","Chlorhexidine","Isopropyl alcohol (post cleaning)","Flowable composite","Wooden wedges","Sectional matrix (Palodent V3)","Omni-Matrix","PTFE tape","Retraction cord","Floss"]}
+};
+var G=[["Endodontics",["Root canal treatment: first stage","Root canal treatment: obturation"]],["Direct restorations",["Direct composite restoration"]],["Post and core",["Fibre post (Parapost Fibre Lux)"]],["Indirect restorations: preparation",["Onlay preparation","Crown preparation","Resin bonded bridge preparation"]],["Indirect restorations: fit",["Onlay fit","Crown fit","Resin bonded bridge fit","Conventional bridge fit"]],["Dentures",["Primary impressions","Secondary impressions","Jaw registration","Metal framework try-in","Wax try-in","Denture fit","Denture review"]],["Implant prosthetics",["Implant impressions","Implant provisional fit","Implant definitive crown fit"]]];
+var IMPL=["Implant impressions","Implant provisional fit","Implant definitive crown fit"],SYS=["Straumann","Nobel Biocare","Astra Tech","BioHorizons"];
+IMPL.forEach(function(n){P[n].o=P[n].o.concat(["PTFE tape","Clip","Straight handpiece","Composite"])});
+function keep(x){return REMOVED.indexOf(x)<0}
+["Onlay fit","Crown fit","Conventional bridge fit","Resin bonded bridge fit","Implant provisional fit","Implant definitive crown fit"].forEach(function(n){var q=P[n];if(q&&q.c.indexOf("PTFE tape")<0&&q.o.indexOf("PTFE tape")<0)q.o=q.o.concat(["PTFE tape"])});
+Object.keys(P).forEach(function(n){var q=P[n];if(q.c.indexOf("Labwork")<0&&q.o.indexOf("Labwork")<0)q.o=q.o.concat(["Labwork"]);});
+Object.keys(P).forEach(function(n){var q=P[n];q.c=q.c.filter(keep);q.o=q.o.filter(keep);});
+var PDEF={},ED={},CUSTCAT={},EDKEY="dentalSetAppEquipment_v1";
+Object.keys(P).forEach(function(n){PDEF[n]={c:P[n].c.slice(),o:P[n].o.slice()}});
+try{var _j=JSON.parse(localStorage.getItem(EDKEY)||"{}");ED=_j.p||{};CUSTCAT=_j.cat||{}}catch(e){ED={};CUSTCAT={}}
+Object.keys(ED).forEach(function(n){if(P[n]&&ED[n]&&Array.isArray(ED[n].c)&&Array.isArray(ED[n].o)){P[n].c=ED[n].c.slice();P[n].o=ED[n].o.slice()}else delete ED[n]});
+function edSave(){try{localStorage.setItem(EDKEY,JSON.stringify({p:ED,cat:CUSTCAT}))}catch(e){}}
+
+var CLAMPS=["00","0","1","2","2A","3","7","8A","9","12A","14","14A","26","27","W8A","56","200","212"];
+var MATS=[["imp","Impregum"],["putty","Putty"],["lb","Light body silicone"],["mb","Medium body silicone"],["hb","Heavy body silicone"],["alg","Alginate"],["bite","Bite registration silicone"],["wax","Pink sheet wax"]];
+var MATX=[["comp","Compound (red)"],["green","Green stick"],["zoe","Zinc oxide eugenol"]];
+var RELYX=["Onlay fit","Crown fit","Conventional bridge fit","Fibre post (Parapost Fibre Lux)"];
+var MENUS={
+clamp:{cat:"Rubber dam & isolation",t:"Rubber dam clamp",s:"Choose the clamp number, or no clamp needed.",ex:"none",o:function(){return CLAMPS.map(function(x){return[x,"Clamp "+x]}).concat([["none","No clamp needed"]])}},
+mats:{cat:"Impression & registration",t:"Impression materials",s:"Tray adhesive and vaseline are added automatically.",wide:1,o:function(){return MATS.concat(PR().matx?MATX:[])}},
+temps:{cat:"Cements & temporary materials",t:"Temporisation materials",s:"Tick what you want set up.",wide:1,o:function(){return[["maxi","Maxi-Temp"],["clip","Clip"],["durlay","Durlay"],["tempbond","Tempbond NE"]]}},
+cems:{cat:"Cements & temporary materials",t:"Cements",s:"Tick the cements and primers you want set up.",wide:1,o:function(){var a=[["gic","GIC"],["p21","Panavia 21"],["p20","Panavia 2.0"],["nex","Nexus 3"]];if(RELYX.indexOf(sel.value)>-1)a.push(["rely","RelyX"]);a.push(["sil","Silane"]);return a}}
+};
+var CATCOL={"Kits & instruments":"#5B7C99","Local anaesthetic":"#D9822B","Rubber dam & isolation":"#3B8FD0","Endodontic equipment & materials":"#C0504D","Handpieces, burs & equipment":"#7A6FC9","Restorative materials":"#3E9B5F","Impression & registration":"#C48A1A","Cements & temporary materials":"#B0568F","Prosthetics & lab work":"#6C8E2F","Implant components":"#2A8FA8","Other":"#7F8C94"};
+var ISOC={pink:["#F4A6C0","#3A1A26"],grey:["#9AA3A8","#fff"],purple:["#8E5BB5","#fff"],white:["#FFFFFF","#2A3A43","#9AA8B1"],yellow:["#F2C811","#3A3000"],red:["#D8392F","#fff"],blue:["#2F6FD0","#fff"],green:["#2E9A4F","#fff"],black:["#2B2B2B","#fff"]};
+var ISOSEQ={6:"pink",8:"grey",10:"purple",15:"white",20:"yellow",25:"red",30:"blue",35:"green",40:"black",45:"white",50:"yellow",55:"red",60:"blue",70:"green",80:"black"};
+var ROTC={"ProTaper Gold S1":"purple","ProTaper Gold S2":"white","ProTaper Gold F1":"yellow","ProTaper Gold F2":"red","ProTaper Gold F3":"blue","ProTaper Gold F4":"black","ProTaper Gold F5":"yellow","Reciproc R25":"red","Reciproc R40":"black","Reciproc R50":"yellow","Reciproc Blue R25":"red","Reciproc Blue R40":"black","Reciproc Blue R50":"yellow","WaveOne Gold Small":"yellow","WaveOne Gold Primary":"red","WaveOne Gold Medium":"green","WaveOne Gold Large":"white"};
+function fcStyle(c){var x=ISOC[c];return x?' class="fc" style="--fc:'+x[0]+';--fk:'+x[1]+(x[2]?';--fb:'+x[2]:'')+'"':""}
+var FG=[
+{k:"hand",t:"Hand files (K files, ISO size)",n:"Hand files",pre:"K file ISO ",s:["8","10","15","20","25","30","35","40","45","50","55","60"],l:["21","25","31"],d:"25"},
+{k:"hed",t:"Hedstrom files (ISO size)",n:"Hedstrom files",pre:"Hedstrom file ISO ",s:["10","15","20","25","30","35","40","45","50","55","60","70","80"],l:["21","25","31"],d:"25"},
+{k:"cp",t:"C+ files (ISO size)",n:"C+ files",pre:"C+ file ISO ",s:["8","10","15","20"],l:["18","21","25"],d:"21"},
+{k:"gg",t:"Gates Glidden drills (size)",n:"Gates Glidden",pre:"Gates Glidden size ",s:["1","2","3","4","5","6"],l:["15","19","25"],d:"19",after:1}
+];
+var ROTS=[["ProTaper Gold","ProTaper Gold",["S1","S2","F1","F2","F3","F4","F5"]],["Reciproc","Reciproc",["R25","R40","R50"]],["Reciproc Blue","Reciproc Blue",["R25","R40","R50"]],["WaveOne Gold","WaveOne Gold",["Small","Primary","Medium","Large"]],["ProTaper D files (retreatment)","ProTaper",["D1","D2","D3"]]],ROTL=[];
+ROTS.forEach(function(g){g[2].forEach(function(n){ROTL.push(g[1]+" "+n)})});
+var ROTLEN=["21","25","31"];
+var ACC=["SX file","ProGlider","Pathfile","XP-endo Shaper"];
+ACC.forEach(function(n){NOTED[n]="Size"});
+
+var $=function(i){return document.getElementById(i)},st={},V=[{st:st,proc:""}],vi=0,PT=[{V:V,vi:0,room:"",sys:""}],pa=0;
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function PR(){return P[sel.value]}
+var sel=$("proc");G.forEach(function(g){var og=document.createElement("optgroup");og.label=g[0];g[1].forEach(function(k){var o=document.createElement("option");o.textContent=k;og.appendChild(o)});sel.appendChild(og)});
+$("sys").innerHTML='<option value="">Select system</option>'+SYS.map(function(x){return"<option>"+x+"</option>"}).join("");
+$("date").value=new Date().toISOString().slice(0,10);
+
+function init(){V[vi].proc=sel.value;var p=PR(),tt=st.teeth||{};st.teeth=tt;st.hide={};st.core={};st.opt={};st.custom=[];st.notes={};st.sub={};st.mm={};st.acc={};
+ st.f={rot:{}};st.fo={rot:{}};st.fl={rot:{"25":true}};FG.forEach(function(g){st.fo[g.k]={};st.f[g.k]={};st.fl[g.k]={};st.fl[g.k][g.d]=true});
+ ACC.forEach(function(n){st.acc[n]=false});st.cone={sys:"",sel:{}};
+ p.c.forEach(function(x){st.core[x]=true});p.o.forEach(function(x){st.opt[x]=false});
+ (p.def||[]).forEach(function(d){(st.mm[d[0]]=st.mm[d[0]]||{})[d[1]]=true});
+ applySys();draw()}
+function isImpl(){return IMPL.indexOf(sel.value)>-1}
+function applySys(){var kit=isImpl()&&$("sys").value?$("sys").value+" prosthetic kit":null,keep2={};if(kit)keep2[kit]=true;Object.keys(st.core).forEach(function(k){if(!/prosthetic kit$/.test(k))keep2[k]=st.core[k]});st.core=keep2;$("sysWrap").hidden=!isImpl()}
+function dn(n){return n==="Impression copings"&&isImpl()&&$("sys").value?$("sys").value+" impression copings":n}
+function nm(n){var v=(st.notes[n]||"").trim(),d=dn(n);return v?d+" ("+v+")":d}
+
+function itemLi(n,key){var S=SUBS[n],nt=NOTED[n]&&(key==="opt"||key==="acc"||(key==="core"&&NOTEDC[n])),on=st[key][n],cc=key==="acc"?"":CATCOL[cat(dn(n))];
+ var h='<li'+(nt?' class="withnote"':'')+(cc?' style="--cc:'+cc+'"':'')+'><label><input type="checkbox" data-k="'+key+'" data-n="'+esc(n)+'"'+(on?" checked":"")+'><span>'+esc(dn(n))+'</span></label>';
+ if(nt)h+='<input type="text" class="note" data-n="'+esc(n)+'" placeholder="'+NOTED[n]+'" aria-label="'+esc(dn(n))+' '+NOTED[n]+'" value="'+esc(st.notes[n]||"")+'">';
+ if(S)h+='<div class="subs"'+(on?"":" hidden")+'>'+S.o.map(function(x,i){return(x[3]&&(!S.o[i-1]||S.o[i-1][3]!==x[3])?'<p class="sub grp">'+x[3]+'</p>':"")+'<label><input type="checkbox" data-s="'+esc(n)+'" data-n="'+esc(x[0])+'"'+(((st.sub[n]||{})[x[0]])?" checked":"")+'><span>'+esc(x[0])+'</span></label>'}).join("")+(S.note?'<p class="sub">'+S.note+'</p>':"")+'</div>';
+ return h+'</li>'}
+function list(id,key){var ks=Object.keys(st[key]);
+ var h="";CATORDER.forEach(function(c){if(c==="@files")return;var g=ks.filter(function(n){return cat(dn(n))===c});if(g.length)h+='<li class="cathead" style="--cc:'+(CATCOL[c]||"#7F8C94")+'">'+c+'</li>'+g.map(function(n){return itemLi(n,key)}).join("")});$(id).innerHTML=h}
+
+function menuVisible(k){var p=PR();if((p.m||[]).indexOf(k)<0)return false;if(k==="clamp")return !!(p.clampAlways||st.core[RD]||st.opt[RD]);return true}
+function clampSug(){var set=[];teethOf({st:st}).forEach(function(k){var u=k.charAt(0)==="U",n=+k.slice(2),a=n>=6?(u?["14","14A","200"]:["7","8A","W8A","56"]):n>=4?["1","2","2A","26"]:["212","9"];a.forEach(function(x){if(set.indexOf(x)<0)set.push(x)})});return set}
+function drawMenus(){var h="";(PR().m||[]).forEach(function(k){if(!menuVisible(k))return;var M=MENUS[k],s=st.mm[k]||{};
+ var sg=k==="clamp"?clampSug():[];
+ h+='<section class="card" style="--cc:'+(CATCOL[M.cat]||"#7F8C94")+'"><h2>'+M.t+'</h2><p class="sub">'+M.s+(sg.length?' <strong class="sgt">Suggested for '+teethTxt({st:st})+': '+sg.join(", ")+'.</strong> Check against the tooth.':"")+'</p><div class="chips cc'+(M.wide?" wide":"")+'">'+M.o().map(function(x){return'<label'+(sg.indexOf(x[0])>-1?' class="sg"':"")+'><input type="checkbox" data-m="'+k+'" data-n="'+esc(x[0])+'"'+(s[x[0]]?" checked":"")+'><span>'+esc(M.ex&&x[0]!==M.ex?x[0]:x[1])+'</span>'+(sg.indexOf(x[0])>-1?'<em class="sgm">★</em>':"")+'</label>'}).join("")+'</div>'+(k==="mats"?'<p class="sub auto" id="auto-mats"></p>':"")+'</section>'});
+ $("menus").innerHTML=h;updateAuto()}
+function menuLines(k){var M=MENUS[k],s=st.mm[k]||{};return M.o().filter(function(x){return s[x[0]]}).map(function(x){return x[1]})}
+
+var CSYS=[["ProTaper Gold",["F1","F2","F3","F4","F5"],function(x){return"ProTaper Gold "+x}],["WaveOne Gold",["Small","Primary","Medium","Large"],function(x){return"WaveOne Gold "+x}],["Reciproc",["R25","R40","R50"],function(x){return"Reciproc "+x}],["Reciproc Blue",["R25","R40","R50"],function(x){return"Reciproc Blue "+x}],["Hand files (ISO)",["15","20","25","30","35","40","45","50","55","60"],function(x){return"ISO "+x}]];
+function csys(n){for(var i=0;i<CSYS.length;i++)if(CSYS[i][0]===n)return CSYS[i]}
+function coneCol(sy,x){return sy[0]==="Hand files (ISO)"?ISOSEQ[+x]:ROTC[sy[2](x)]}
+function drawCones(){var p=PR(),c=$("conesCard");c.hidden=!p.cones;if(!p.cones){c.innerHTML="";return}
+ var sy=csys(st.cone.sys),h='<h2>Master GP cones</h2><p class="sub">Pick the file system and the cones follow it. Ticking a file above ticks its matching cone.</p><div class="fgroup"><div class="fhead"><h3>File system</h3></div><div class="chips wide">'+CSYS.map(function(x){return'<label><input type="radio" name="csys" data-cs="'+esc(x[0])+'"'+(st.cone.sys===x[0]?" checked":"")+'><span>'+esc(x[0])+'</span></label>'}).join("")+'</div></div>';
+ h+='<div class="fgroup"><div class="fhead"><h3>'+(sy?esc(sy[0])+' master cones':'Master cones')+'</h3></div>';
+ h+=sy?'<div class="chips">'+sy[1].map(function(x){var k=sy[2](x);return'<label'+fcStyle(coneCol(sy,x)).replace('class="fc"',sy[0]==="Reciproc Blue"?'class="fc rb"':'class="fc"')+'><input type="checkbox" data-co="'+esc(k)+'"'+(st.cone.sel[k]?" checked":"")+'><span>'+esc(x)+'</span></label>'}).join("")+'</div>':'<p class="sub">Choose a file system to see its matching cones.</p>';
+ h+='</div><div class="fgroup"><div class="fhead"><h3>With any system</h3></div><div class="chips wide"><label class="full"><input type="checkbox" data-co="@taper"'+(st.cone.sel["@taper"]?" checked":"")+'><span>2% taper GP cones + accessory points</span></label></div></div>';
+ c.innerHTML=h}
+function coneLines(){var p=PR();if(!p.cones)return[];var sy=csys(st.cone.sys),r=[];if(sy)sy[1].forEach(function(x){var k=sy[2](x);if(st.cone.sel[k])r.push(k+" master GP cone")});if(st.cone.sel["@taper"])r.push("2% taper GP cones + accessory points");return r}
+function drawFiles(){var p=PR();$("filesCard").hidden=!p.files;if(!p.files){$("filesCard").innerHTML="";return}
+ function chip(g,key,txt,col){return'<label'+fcStyle(col)+'><input type="checkbox" data-f="'+g+'" data-n="'+esc(key)+'"'+(st.f[g][key]?" checked":"")+'><span>'+esc(txt)+'</span></label>'}
+ function len(k,arr){return'<div class="lenrow" role="group" aria-label="Length"><span>Length</span>'+arr.map(function(x){return'<label><input type="checkbox" data-fl="'+k+'" data-n="'+x+'"'+(st.fl[k][x]?" checked":"")+'><span>'+x+' mm</span></label>'}).join("")+'</div>'}
+ var h='<h2>Endodontic files</h2>';
+ function grp(g){return'<div class="fgroup"><div class="fhead"><h3>'+g.t+'</h3>'+len(g.k,g.l)+'</div><div class="chips">'+g.s.map(function(x){return chip(g.k,x,x,g.after?undefined:ISOSEQ[+x])}).join("")+'</div><div class="fper" id="per-'+g.k+'"></div></div>'}
+ FG.forEach(function(g){if(!g.after)h+=grp(g)});
+ h+='<div class="fgroup"><div class="fhead"><h3>Rotary files (tip size / taper)</h3>'+len("rot",ROTLEN)+'</div><div class="chips">'+ROTS.map(function(g){return'<div class="sys">'+g[0]+'</div>'+g[2].map(function(n){var c=chip("rot",g[1]+" "+n,n,ROTC[g[1]+" "+n]);return g[1]==="Reciproc Blue"?c.replace('class="fc"','class="fc rb"'):c}).join("")}).join("")+'</div><div class="fper" id="per-rot"></div></div>';
+ h+='<h3 class="fsub">Accessory files</h3>';FG.forEach(function(g){if(g.after)h+=grp(g)});
+ h+='<div class="fgroup"><ul class="items">'+ACC.map(function(n){return itemLi(n,"acc")}).join("")+'</ul></div>';
+ $("filesCard").innerHTML=h;FG.forEach(function(g){drawPer(g.k)});drawPer("rot")}
+
+function lines(obj){var r=[];Object.keys(obj).forEach(function(n){if(!obj[n])return;var S=SUBS[n],pick=S?S.o.filter(function(x){return(st.sub[n]||{})[x[0]]}):[],main=pick.filter(function(x){return!x[2]}),extra=pick.filter(function(x){return x[2]});
+ if(main.length)main.forEach(function(x){r.push(x[1])});else r.push(nm(n));extra.forEach(function(x){r.push(x[1])})});return r}
+function groupInfo(k){if(k==="rot")return{arr:ROTLEN,items:ROTL,pre:""};for(var i=0;i<FG.length;i++)if(FG[i].k===k)return{arr:FG[i].l,items:FG[i].s,pre:FG[i].pre.replace(/ISO $/,"ISO ")}}
+function effLens(k,x){return st.fo[k][x]||st.fl[k]}
+function lenOf(o){var a=Object.keys(o).filter(function(x){return o[x]}).map(Number).sort(function(a,b){return a-b});return(a.length?a:[25]).join(" + ")+" mm"}
+function drawPer(k){var el=$("per-"+k);if(!el)return;var gi=groupInfo(k),on=gi.items.filter(function(x){return st.f[k][x]});
+ if(!on.length){el.innerHTML="";return}
+ el.innerHTML='<p class="fp-h">Length for each file <span>(starts at the length above. Tick two lengths for the same file to list it once for each.)</span></p>'+on.map(function(x){var ov=!!st.fo[k][x],ef=effLens(k,x);return'<div class="fprow'+(ov?" ov":"")+'"><span class="fpn">'+esc(gi.pre+x)+'</span><div class="lenrow">'+gi.arr.map(function(l){return'<label><input type="checkbox" data-fo="'+k+'" data-fx="'+esc(x)+'" data-n="'+l+'"'+(ef[l]?" checked":"")+'><span>'+l+'</span></label>'}).join("")+'</div>'+(ov?'<button type="button" class="sec fpr" data-fr="'+k+'" data-fx="'+esc(x)+'">Reset</button>':"")+'</div>'}).join("")}
+function lenTxtFor(k,x){return lenOf(effLens(k,x))}
+function lenTxt(k){var a=Object.keys(st.fl[k]).filter(function(x){return st.fl[k][x]}).map(Number).sort(function(a,b){return a-b});return(a.length?a:[25]).join(" + ")+" mm"}
+function lensArr(k,x){var o=effLens(k,x),a=Object.keys(o).filter(function(z){return o[z]}).map(Number).sort(function(a,b){return a-b});return a.length?a:[25]}
+function flat(items,k,pre){var r=[];items.forEach(function(x){lensArr(k,x).forEach(function(l){r.push(pre+x+" ("+l+" mm)")})});return r}
+function fileLines(){var r=[];FG.forEach(function(g){if(!g.after)r.push([g.n,flat(g.s.filter(function(x){return st.f[g.k][x]}),g.k,g.pre)])});
+ r.push(["Rotary files",flat(ROTL.filter(function(x){return st.f.rot[x]}),"rot","")]);
+ var gg=[];FG.forEach(function(g){if(g.after)gg=gg.concat(flat(g.s.filter(function(x){return st.f[g.k][x]}),g.k,g.pre))});
+ r.push(["Accessory files",ACC.filter(function(x){return st.acc[x]}).map(nm).concat(gg)]);return r}
+function derived(){var p=PR(),d=[];function add(x){if(d.indexOf(x)<0)d.push(x)}
+ if(st.core["LA cartridges"]||st.opt["LA cartridges"])add("Syringe handle");
+ if(st.opt["MTA putty"]||st.opt["MTA powder and liquid"])add("MTA carriers");
+ if(st.opt["Composite"]){add("Etch");add("Bond");add("Flowable composite")}
+ if((p.m||[]).indexOf("mats")>-1){var s=st.mm.mats||{},any=false;Object.keys(s).forEach(function(k){if(s[k])any=true});
+  if(s.alg)add("Alginate tray adhesive");if(s.putty||s.lb||s.mb||s.hb)add("Silicone tray adhesive");if(s.imp)add("Polyether tray adhesive");
+  if(any)add("Vaseline");
+  if(p.matx){if(s.comp)add("Hot water");if(s.green)add("Bunsen burner");if(s.putty)add("Scalpel")}}
+ return d}
+function updateAuto(){var el=$("auto-mats");if(!el)return;var d=derived().filter(function(x){return!/^(Etch|Bond|Flowable composite|Syringe handle)$/.test(x)});el.textContent=d.length?"Added automatically: "+d.join(", "):""}
+var CATS=[
+["Kits & instruments",/^(exam|restorative|endodontic) kit$|parapost fibre lux kit|wax knife|patient mirror|scalpel/i],
+["Local anaesthetic",/cartridge|anaesthetic|syringe handle|needle/i],
+["Rubber dam & isolation",/rubber dam|opaldam|clamp|retraction cord|bite block|optragate/i],
+["Implant components",/prosthetic kit|coping|scan body|abutment/i],
+["Endodontic equipment & materials",/hypochlorite|edta|chlorhexidine|paper points|gutta percha|alpha, beta|sealer|calcium hydroxide|irrigation syringe|endo ruler|file sponge|gp master cones|access bur kit|piezo|apex locator|endo motor|warm vertical|mta|gates glidden|plugger/i],
+["Handpieces, burs & equipment",/handpiece|\bburs?\b|\bdrills?\b|scanner|scaler|ultrasonic|hot plate|bunsen|heat source|no flame|hot water|sandblaster|light cure/i],
+["Cements & temporary materials",/temporary|provisional|maxi-temp|durlay|tempbond|\bclip\b|\birm\b|cavit|cement|panavia|nexus|silane|primer/i],
+["Prosthetics & lab work",/occlude|labwork|lab work|shade guide|mould guide|articulating paper|face bow|gothic arch|articulator|fox|willis|pressure indicating|occlusal indicator|denture|reline|tissue conditioner|polishing kit|study casts/i],
+["Impression & registration",/impression|impregum|memosil|putty|silicone|alginate|tray|wax|compound|green stick|zinc oxide|vaseline|bite registration|mixing/i],
+["Restorative materials",/floss|\bpost\b|alcohol|composite|\betch\b|\bbond\b|flowable|matrix|wedge|strips|ipr|mylar|biodentine|glass ionomer|\bgic\b|core build-up|ptfe|teflon|glycerine|pumice|prophy/i]
+],CATORDER=["Kits & instruments","Local anaesthetic","Rubber dam & isolation","Endodontic equipment & materials","@files","Handpieces, burs & equipment","Restorative materials","Impression & registration","Cements & temporary materials","Prosthetics & lab work","Implant components","Other"];
+function cat(x){if(CUSTCAT[x])return CUSTCAT[x];for(var i=0;i<CATS.length;i++)if(CATS[i][1].test(x))return CATS[i][0];return"Other"}
+function secsOne(){var p=PR(),E=[],all={},custom=st.custom.slice(),S=[];
+ lines(st.core).forEach(function(x){E.push([x,cat(x)])});
+ (p.m||[]).forEach(function(k){if(!menuVisible(k))return;menuLines(k).forEach(function(x){E.push([x,MENUS[k].cat])})});
+ lines(st.opt).forEach(function(x){E.push([x,cat(x)])});
+ E.forEach(function(e){all[e[0].toLowerCase()]=1});custom.forEach(function(x){all[x.toLowerCase()]=1});
+ derived().filter(function(x){return!all[x.toLowerCase()]}).forEach(function(x){E.push([x,cat(x)])});
+ var rs=ROTL.filter(function(x){return st.f.rot[x]&&!/^ProTaper D/.test(x)});
+ if(rs.length){var N=[];E.forEach(function(e){if(e[0]==="Paper points"){var tf=rs.filter(function(x){return /^ProTaper Gold F/.test(x)}).slice(-2),pp=rs.filter(function(x){return!/^ProTaper Gold/.test(x)}).concat(tf);if(pp.length)pp.forEach(function(x){N.push([x+" paper points",e[1]])});else N.push(e)}else if(e[0]==="GP Master Cones"){var tc=rs.filter(function(x){return /^ProTaper Gold F/.test(x)}).slice(-2),cc=rs.filter(function(x){return!/^ProTaper Gold/.test(x)}).concat(tc);if(cc.length)cc.forEach(function(x){N.push([x+" master GP cone",e[1]])});else N.push(e)}else N.push(e)});E=N}
+ custom.forEach(function(x){E.push([x,"Other"])});
+ CATORDER.forEach(function(c){if(c==="@files"){if(p.files)fileLines().forEach(function(f){if(f[1].length)S.push(f)});var cl=coneLines();if(cl.length)S.push(["Master GP cones",cl]);return}
+  var l=E.filter(function(e){return e[1]===c}).map(function(e){return e[0]});if(l.length)S.push([c,l])});
+ var hd=st.hide||{};return S.map(function(x){return[x[0],x[1].filter(function(t){return!hd[t.toLowerCase()]})]}).filter(function(x){return x[1].length})}
+var SHORT={"Root canal treatment: first stage":"RCT first stage","Root canal treatment: obturation":"RCT obturation","Direct composite restoration":"Composite","Onlay preparation":"Onlay prep","Crown preparation":"Crown prep","Resin bonded bridge preparation":"RBB prep","Onlay fit":"Onlay fit","Crown fit":"Crown fit","Resin bonded bridge fit":"RBB fit","Conventional bridge fit":"Bridge fit","Metal framework try-in":"Framework try-in","Primary impressions":"Primary imps","Secondary impressions":"Secondary imps","Jaw registration":"Jaw reg","Wax try-in":"Wax try-in","Denture fit":"Denture fit","Denture review":"Denture review","Implant impressions":"Implant imps","Implant provisional fit":"Implant prov","Implant definitive crown fit":"Implant crown","Fibre post (Parapost Fibre Lux)":"Fibre post"};
+function shortOf(p){return SHORT[p]||p}
+var ORD=[];CATORDER.forEach(function(c){if(c==="@files")["Hand files","Hedstrom files","C+ files","Rotary files","Accessory files","Master GP cones"].forEach(function(x){ORD.push(x)});else ORD.push(c)});
+var NOTOOTH=["Primary impressions","Secondary impressions","Jaw registration","Metal framework try-in","Wax try-in","Denture fit","Denture review"];
+var TEETH=[["Upper right","UR",[8,7,6,5,4,3,2,1],"up"],["Upper left","UL",[1,2,3,4,5,6,7,8],"up"],["Lower right","LR",[8,7,6,5,4,3,2,1],"lo"],["Lower left","LL",[1,2,3,4,5,6,7,8],"lo"]],TORD=[];
+TEETH.forEach(function(q){q[2].forEach(function(n){TORD.push(q[1]+n)})});
+function teethOf(e){return Object.keys(e.st.teeth||{}).filter(function(k){return e.st.teeth[k]&&TORD.indexOf(k)>-1}).sort(function(a,b){return TORD.indexOf(a)-TORD.indexOf(b)})}
+function teethTxt(e){var t=teethOf(e);return t.length?t.join(", "):""}
+function procLabel(e){var t=teethTxt(e);return e.proc+(t?" ("+t+")":"")}
+function shortLabel(e){var t=teethTxt(e);return shortOf(e.proc)+(t?" "+t:"")}
+function procNames(){V[vi].proc=sel.value;return V.map(function(e){return e.proc?procLabel(e):""}).filter(Boolean).join(" + ")}
+function toothUI(){var no=NOTOOTH.indexOf(sel.value)>-1;$("toothWrap").hidden=no;if(no)st.teeth={};var t=teethTxt({st:st});$("toothBtn").textContent=t?(teethOf({st:st}).length>1?"Teeth ":"Tooth ")+t:"Select tooth";$("toothBtn").classList.toggle("has",!!t)}
+function drawTeeth(){$("toothGrid").className="tq tgrid";$("toothGrid").innerHTML=TEETH.map(function(q,qi){return"<div class=\"qd q"+qi+"\"><p class=\"qh\">"+q[0]+"</p><div class=\"row\">"+q[2].map(function(n){var k=q[1]+n;return'<button type="button" class="t '+q[3]+'" data-tn="'+k+'" aria-pressed="'+(!!(st.teeth&&st.teeth[k]))+'" aria-label="Tooth '+k+'"><small>'+q[1]+'</small><span>'+n+'</span></button>'}).join("")+"</div></div>"}).join("")}
+$("toothBtn").onclick=function(){drawTeeth();var d=$("toothDlg");if(d.showModal)d.showModal();else d.setAttribute("open","")};
+$("toothGrid").addEventListener("click",function(e){var b=e.target.closest("button[data-tn]");if(!b)return;st.teeth=st.teeth||{};var n=b.dataset.tn;st.teeth[n]=!st.teeth[n];b.setAttribute("aria-pressed",!!st.teeth[n]);sheet();toothUI();drawMenus()});
+$("toothClear").onclick=function(){st.teeth={};drawTeeth();sheet();toothUI();drawMenus()};
+$("toothDone").onclick=function(){var d=$("toothDlg");if(d.close)d.close();else d.removeAttribute("open")};
+$("toothDlg").addEventListener("click",function(e){if(e.target===this&&this.close)this.close()});
+function anyImpl(){V[vi].proc=sel.value;return V.some(function(e){return IMPL.indexOf(e.proc)>-1})}
+function secs(){if(V.length<2)return secsOne();
+ V[vi].proc=sel.value;var sv=st,sp=sel.value,res=[];
+ V.forEach(function(e){st=e.st;sel.value=e.proc;try{res.push(secsOne())}catch(x){res.push([])}});st=sv;sel.value=sp;
+ var map={},titles=[];
+ res.forEach(function(r,i){r.forEach(function(sc){var m=map[sc[0]];if(!m){m=map[sc[0]]={keys:[],o:{}};titles.push(sc[0])}sc[1].forEach(function(x){var k=x.toLowerCase(),o=m.o[k];if(!o){o=m.o[k]={t:x,p:[]};m.keys.push(k)}if(o.p.indexOf(i)<0)o.p.push(i)})})});
+ titles.sort(function(a,b){var x=ORD.indexOf(a),y=ORD.indexOf(b);return(x<0?99:x)-(y<0?99:y)});
+ return titles.map(function(t){var m=map[t];return[t,m.keys.map(function(k){var o=m.o[k],tag="";if(o.p.length<res.length){var u=[];o.p.forEach(function(i){var n=shortLabel(V[i]);if(u.indexOf(n)<0)u.push(n)});tag=" · "+u.join(" + ")}return o.t+tag})]})}
+function renderVisit(){V[vi].proc=sel.value;var h=V.map(function(e,i){return'<span class="vp'+(i===vi?" on":"")+'"><button type="button" class="vn" data-vi="'+i+'"'+(i===vi?' aria-current="true"':"")+'>'+(i+1)+'. '+esc(shortLabel(e)||"Choose")+'</button>'+(V.length>1?'<button type="button" class="vx" data-rm="'+i+'" aria-label="Remove '+esc(shortLabel(e)||"procedure")+'">×</button>':"")+'</span>'}).join("");
+ $("visit").innerHTML=h+'<button type="button" class="va" data-add="1">+ Add another procedure</button>'}
+function switchTo(i,keepStep){V[vi].proc=sel.value;vi=i;st=V[i].st;sel.value=V[i].proc;applySys();draw();if(!keepStep||cur==="review")go("core",true)}
+function addProc(){V[vi].proc=sel.value;var used=V.map(function(e){return e.proc}),opts=[].slice.call(sel.options).map(function(o){return o.value}),nx=opts.filter(function(o){return used.indexOf(o)<0})[0]||opts[0];
+ var e={st:{},proc:nx};V.push(e);vi=V.length-1;st=e.st;sel.value=nx;init();go("details",true);var m=$("stepMsg");m.textContent="Choose the next procedure for this patient, then continue. Clinician, date and room stay the same.";m.hidden=false}
+function removeProc(i){if(V.length<2)return;V[vi].proc=sel.value;V.splice(i,1);if(i<vi)vi--;else if(i===vi)vi=Math.min(i,V.length-1);st=V[vi].st;sel.value=V[vi].proc;applySys();draw()}
+function resetAll(){var v=[{st:{},proc:sel.value}];PT=[{V:v,vi:0,room:"",sys:""}];pa=0;V=v;vi=0;st=V[0].st;$("room").value="";$("sys").value="";init();go("details",true)}
+function syncPT(){V[vi].proc=sel.value;var x=PT[pa];x.V=V;x.vi=vi;x.room=$("room").value;x.sys=$("sys").value}
+function inPatient(j,fn){if(j===pa)return fn();syncPT();var sv={V:V,vi:vi,st:st,pa:pa,p:sel.value,room:$("room").value,sys:$("sys").value},t=PT[j];
+ pa=j;V=t.V;vi=t.vi;st=V[vi].st;sel.value=V[vi].proc;$("room").value=t.room;$("sys").value=t.sys;var r;try{r=fn()}finally{pa=sv.pa;V=sv.V;vi=sv.vi;st=sv.st;sel.value=sv.p;$("room").value=sv.room;$("sys").value=sv.sys}return r}
+function ptLabel(j){syncPT();var r=PT[j].room;return"Patient "+(j+1)+(r?" · "+r:"")}
+function loadPatient(j){pa=j;V=PT[j].V;vi=PT[j].vi;st=V[vi].st;sel.value=V[vi].proc;$("room").value=PT[j].room;$("sys").value=PT[j].sys;applySys();draw()}
+function switchPatient(j){if(j===pa)return;syncPT();loadPatient(j)}
+function addPatient(){syncPT();var used=[];PT.forEach(function(t){t.V.forEach(function(e){used.push(e.proc)})});var opts=[].slice.call(sel.options).map(function(x){return x.value}),nx=opts.filter(function(x){return used.indexOf(x)<0})[0]||opts[0];var v=[{st:{},proc:nx}];PT.push({V:v,vi:0,room:"",sys:""});pa=PT.length-1;V=v;vi=0;st=V[0].st;sel.value=V[0].proc;$("room").value="";$("sys").value="";init();go("details",true);var m=$("stepMsg");m.textContent="Choose the procedure for the next patient, then continue. Clinician and date stay the same.";m.hidden=false}
+function removePatient(j){if(PT.length<2)return;syncPT();PT.splice(j,1);if(j<pa)pa--;else if(j===pa)pa=Math.min(j,PT.length-1);loadPatient(pa)}
+function renderPT(){syncPT();var multi=PT.length>1;
+ $("pbar").innerHTML=(multi?PT.map(function(x,j){return'<span class="vp pt'+(j===pa?" on":"")+'"><button type="button" class="vn" data-pj="'+j+'"'+(j===pa?' aria-current="true"':"")+'>'+esc(ptLabel(j))+'</button><button type="button" class="vx" data-prm="'+j+'" aria-label="Remove patient '+(j+1)+'">×</button></span>'}).join(""):"")+'<button type="button" class="va" data-addp="1">+ Add another patient</button>';
+ var t=$("ptabs");t.hidden=!multi;t.innerHTML=multi?PT.map(function(x,j){return'<button type="button" role="tab" data-pj="'+j+'" aria-selected="'+(j===pa)+'" class="'+(j===pa?"on":"")+'">'+esc(ptLabel(j))+'</button>'}).join(""):""}
+var SEQ=0;
+function fileCol(t){t=String(t).replace(/ · .*$/,"");var m=/^(?:K file|Hedstrom file|C\+ file) ISO (\d+)/.exec(t)||/^ISO (\d+) master GP cone/.exec(t),k;if(m)k=ISOSEQ[+m[1]];else k=ROTC[t.replace(/ (?:master GP cone|paper points)$/,"").replace(/ \([\d + ]+ mm\)$/,"")];return k&&ISOC[k]?ISOC[k]:null}
+function swatch(t){var c=fileCol(t);return c?'<i class="sw" style="background:'+c[0]+(c[2]?';border-color:'+c[2]:'')+'"></i>':""}
+function section(t,a){return'<h3>'+esc(t)+' ('+a.length+')</h3>'+(a.length?'<ul>'+a.map(function(x){return'<li style="--i:'+Math.min(SEQ++,14)+'"><label style="display:flex;gap:10px;align-items:center;flex:1;min-width:0"><input type="checkbox">'+swatch(x)+'<span>'+esc(x)+'</span></label><button type="button" class="rmx" data-rmx="'+esc(x)+'" aria-label="Remove '+esc(x)+' from this list" title="Remove from this list">×</button></li>'}).join("")+'</ul>':'<p class="empty">Nothing selected.</p>')}
+function fmtDate(){var d=$("date").value;return d?new Date(d+"T12:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short",year:"numeric"}):""}
+function meta(){return[PT.length>1&&("Patient "+(pa+1)),procNames(),anyImpl()&&$("sys").value&&("System: "+$("sys").value),$("who").value&&("Clinician: "+$("who").value),$("room").value&&("Room: "+$("room").value),fmtDate()].filter(Boolean).join(", ")}
+function panel(j,act){return inPatient(j,function(){SEQ=0;var h='<div class="pl'+(act?" on":"")+'" data-pj="'+j+'"><p class="meta">'+esc(meta())+'</p>'+(anyImpl()&&!$("sys").value?'<p class="empty">Choose an implant system to add its prosthetic kit.</p>':"")+secs().map(function(x){return section(x[0],x[1])}).join("");if(h.indexOf("<h3>")<0)h+='<p class="empty">Nothing selected.</p>';var rm={};V.forEach(function(e){var q=e.st.hide||{};Object.keys(q).forEach(function(k){rm[k]=q[k]})});var ks=Object.keys(rm);h+='<div class="freeadd"><input type="text" class="freein" placeholder="Add anything else, e.g. spare bur" aria-label="Add a free text item to this list"><button type="button" data-freeadd="1">Add item</button></div>';if(ks.length)h+='<div class="removed"><span>Removed from this list:</span> '+ks.map(function(k){return'<button type="button" class="sec" data-restore="'+esc(k)+'" aria-label="Put back '+esc(rm[k])+'">'+esc(rm[k])+' ↩</button>'}).join("")+'</div>';return h+"</div>"})}
+function sheet(){renderVisit();renderPT();$("out").innerHTML=PT.map(function(x,j){return panel(j,j===pa)}).join("");updateAuto();stepUI();if(qrOpen)drawQR()}
+var HINTS={"Root canal treatment: first stage":"EndoActivator, Glyde, extra rubber dam clamp","Root canal treatment: obturation":"finger spreaders, pluggers, heat-source tips","Direct composite restoration":"Mylar strip, Teflon-coated instrument, shade photo","Onlay preparation":"extra diamond burs, gingival retraction paste, shade photo","Crown preparation":"reduction guide, putty matrix, shade tab","Resin bonded bridge preparation":"putty guide, rest-seat bur, shade tab","Onlay fit":"try-in paste, interdental brush, occlusal indicator wax","Crown fit":"try-in paste, interdental brush, occlusal indicator wax","Resin bonded bridge fit":"try-in paste, sandblasted wing check, interdental brush","Conventional bridge fit":"try-in paste, interdental brush, occlusal indicator wax","Metal framework try-in":"disclosing paste for rests, framework adjustment burs, spare clasps","Primary impressions":"perforated stock trays, wax strip for tray extension","Secondary impressions":"border-moulding compound, special tray handle","Jaw registration":"pre-registered record rims, bite fork","Wax try-in":"shade photo, spare occlusal rims","Denture fit":"fit-checker paste, acrylic burs, post-op leaflet","Denture review":"tissue conditioner, soft liner, denture adhesive","Implant impressions":"open-tray window sealing wax, pick-up screwdriver","Implant provisional fit":"screw-access filling material, hand driver","Implant definitive crown fit":"screw-access filling material, hand driver","Fibre post (Parapost Fibre Lux)":"gutta percha solvent, extra post size, dentine pins"};
+function draw(){toothUI();var h=HINTS[sel.value];$("custom").placeholder="Something else, e.g. "+(h||"patient’s own bite registration");list("core","core");list("opt","opt");drawMenus();drawFiles();drawCones();sheet()}
+
+sel.onchange=init;
+$("sys").onchange=function(){applySys();draw()};
+["who","date","room"].forEach(function(i){$(i).oninput=sheet});
+document.addEventListener("input",function(e){var t=e.target;if(t.classList&&t.classList.contains("note")){st.notes[t.dataset.n]=t.value;sheet()}});
+document.addEventListener("change",function(e){var t=e.target,d=t.dataset;if(!d)return;
+ if(t.type==="checkbox"){t.classList.remove("pop");void t.offsetWidth;t.classList.add("pop")}
+ if(d.k){st[d.k][d.n]=t.checked;var li=t.closest("li"),sb=li&&li.querySelector(".subs");if(sb)sb.hidden=!t.checked;if(d.n===RD)drawMenus();sheet()}
+ else if(d.s){(st.sub[d.s]=st.sub[d.s]||{})[d.n]=t.checked;sheet()}
+ else if(d.m){var m=st.mm[d.m]=st.mm[d.m]||{},M=MENUS[d.m],box=$("menus");m[d.n]=t.checked;
+  if(M.ex&&t.checked){if(d.n===M.ex){Object.keys(m).forEach(function(k){if(k!==M.ex)m[k]=false});box.querySelectorAll('input[data-m="'+d.m+'"]').forEach(function(i){if(i!==t)i.checked=false})}
+   else{m[M.ex]=false;var x=box.querySelector('input[data-m="'+d.m+'"][data-n="'+M.ex+'"]');if(x)x.checked=false}}
+  sheet()}
+ else if(d.cs!==undefined){st.cone.sys=d.cs;drawCones();sheet()}
+ else if(d.co!==undefined){st.cone.sel[d.co]=t.checked;sheet()}
+ else if(d.fo){var k=d.fo,x=d.fx,cur=Object.assign({},effLens(k,x));cur[d.n]=t.checked;if(!Object.keys(cur).some(function(z){return cur[z]})){cur[d.n]=true}
+  var same=Object.keys(cur).filter(function(z){return cur[z]}).sort().join()===Object.keys(st.fl[k]).filter(function(z){return st.fl[k][z]}).sort().join();if(same)delete st.fo[k][x];else st.fo[k][x]=cur;drawPer(k);sheet()}
+ else if(d.f){st.f[d.f][d.n]=t.checked;if(!t.checked)delete st.fo[d.f][d.n];drawPer(d.f);
+  if(PR().cones){var ck=null,sn=null;if(d.f==="rot"){CSYS.forEach(function(y){y[1].forEach(function(x){if(y[2](x)===d.n){sn=y[0];ck=d.n}})})}else if(d.f==="hand"&&csys("Hand files (ISO)")[1].indexOf(d.n)>-1){sn="Hand files (ISO)";ck="ISO "+d.n}
+   if(ck){st.cone.sys=sn;st.cone.sel[ck]=t.checked;drawCones()}}
+  sheet()}
+ else if(d.fl){st.fl[d.fl][d.n]=t.checked;if(!Object.keys(st.fl[d.fl]).some(function(x){return st.fl[d.fl][x]})){st.fl[d.fl][d.n]=true;t.checked=true}drawPer(d.fl);sheet()}});
+function addCustom(){var v=$("custom").value.trim();if(v){st.custom.push(v);$("custom").value="";sheet()}}
+$("addbtn").onclick=addCustom;$("custom").onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();addCustom()}};
+$("print").onclick=function(){window.print()};
+$("reset").onclick=resetAll;
+$("addproc").onclick=addProc;
+function freeAdd(pl,j){var inp=pl.querySelector(".freein"),v=inp.value.trim();if(!v)return;var e=j===pa?V[vi]:PT[j].V[PT[j].vi];e.st.custom=e.st.custom||[];e.st.custom.push(v);sheet();var n=$("out").querySelector('.pl[data-pj="'+j+'"] .freein');if(n)n.focus()}
+$("out").addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList&&e.target.classList.contains("freein")){e.preventDefault();var pl=e.target.closest(".pl");freeAdd(pl,+pl.dataset.pj)}});
+$("out").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var pl=b.closest(".pl");if(!pl)return;var j=+pl.dataset.pj;
+ if(b.dataset.freeadd!==undefined){freeAdd(pl,j)}
+ else if(b.dataset.rmx!==undefined){var base=b.dataset.rmx.replace(/ · .*$/,"");PT[j].V.forEach(function(x){x.st.hide=x.st.hide||{};x.st.hide[base.toLowerCase()]=base});sheet()}
+ else if(b.dataset.restore!==undefined){PT[j].V.forEach(function(x){if(x.st.hide)delete x.st.hide[b.dataset.restore]});sheet()}});
+$("filesCard").addEventListener("click",function(e){var b=e.target.closest("button[data-fr]");if(!b)return;delete st.fo[b.dataset.fr][b.dataset.fx];drawPer(b.dataset.fr);sheet()});$("addpt").onclick=addPatient;
+function ptClick(e){var b=e.target.closest("button");if(!b)return;if(b.dataset.addp)addPatient();else if(b.dataset.prm!==undefined)removePatient(+b.dataset.prm);else if(b.dataset.pj!==undefined)switchPatient(+b.dataset.pj)}
+$("pbar").addEventListener("click",ptClick);$("ptabs").addEventListener("click",ptClick);
+$("visit").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;if(b.dataset.add)addProc();else if(b.dataset.rm!==undefined)removeProc(+b.dataset.rm);else if(b.dataset.vi!==undefined&&+b.dataset.vi!==vi)switchTo(+b.dataset.vi,true)});
+function listText(){return PT.map(function(x,j){return inPatient(j,function(){return meta()+"\n\n"+secs().filter(function(s){return s[1].length}).map(function(s){return s[0].toUpperCase()+"\n"+s[1].map(function(x){return"[ ] "+x}).join("\n")}).join("\n\n")})}).join("\n\n==========\n\n")}
+$("copy").onclick=function(){var t=listText(),b=$("copy");
+ function ok(){b.textContent="Copied";setTimeout(function(){b.textContent="Copy as text"},1500)}
+ try{navigator.clipboard.writeText(t).then(ok,function(){b.textContent="Copy blocked"})}catch(e){b.textContent="Copy blocked"}};
+
+$("wa").onclick=function(){var l=document.createElement("a");l.href="https://wa.me/?text="+encodeURIComponent("Surgery set-up list\n\n"+listText());l.target="_blank";l.rel="noopener";document.body.appendChild(l);l.click();l.remove()};
+var qrOpen=false,qrSeq=0;
+function b64b(a){var x="";for(var i=0;i<a.length;i++)x+=String.fromCharCode(a[i]);return btoa(x).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function payloadOne(){return JSON.stringify([(PT.length>1?"Patient "+(pa+1)+": ":"")+procNames(),anyImpl()?$("sys").value:"",$("who").value,$("date").value,$("room").value,secs().filter(function(s){return s[1].length})])}
+function payload(one){if(PT.length<2||one)return payloadOne();syncPT();return JSON.stringify(["@p",$("date").value,$("who").value,PT.map(function(x,j){return inPatient(j,function(){return[ptLabel(j),procNames(),anyImpl()?$("sys").value:"",$("room").value,secs().filter(function(s){return s[1].length})]})})])}
+async function makeUrl(one){var json=payload(one),u="u"+b64b(new TextEncoder().encode(json));
+ try{if(typeof CompressionStream==="function"){var cs=new CompressionStream("deflate-raw"),w=cs.writable.getWriter();w.write(new TextEncoder().encode(json));w.close();var c="c"+b64b(new Uint8Array(await new Response(cs.readable).arrayBuffer()));if(c.length<u.length)u=c}}catch(e){}
+ return LISTURL+"#"+u}
+function ascii(t){return t.replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"').replace(/[\u2013\u2014]/g,"-").replace(/\u00D7/g,"x").replace(/\u00B7/g,"-").replace(/[^\x20-\x7E\n]/g,"")}
+function qrText(only){var idx=only?[pa]:PT.map(function(x,j){return j});return ascii(idx.map(function(j){return inPatient(j,function(){return meta()+"\n"+secs().filter(function(s){return s[1].length}).map(function(s){return s[0].toUpperCase()+"\n"+s[1].map(function(x){return"- "+x}).join("\n")}).join("\n")})}).join("\n\n=====\n\n"))}
+async function drawQR(){var my=++qrSeq,box=$("qrimg"),msg=$("qrmsg");
+ try{if(typeof qrcode!=="function")throw new Error("lib");
+  var q=null,only=false;
+  for(var md=0;md<2&&!q;md++){if(md===1&&PT.length<2)break;var url=qrText(md===1);
+   ["M","L"].forEach(function(l){if(q)return;try{var z=qrcode(0,l);z.addData(url);z.make();q=z}catch(e){}});only=md===1&&!!q}
+  if(!q)throw new Error("long");
+  var n=q.getModuleCount(),m=4,sz=n+2*m,d="";
+  for(var r=0;r<n;r++)for(var c=0;c<n;c++)if(q.isDark(r,c))d+="M"+(c+m)+" "+(r+m)+"h1v1h-1z";
+  box.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+sz+' '+sz+'" shape-rendering="crispEdges" role="img" aria-label="QR code for the final set-up list"><rect width="'+sz+'" height="'+sz+'" fill="#fff"/><path d="'+d+'" fill="#000"/></svg>';
+  msg.textContent=(only?"Both patients are too long for one code, so this QR shows only "+ptLabel(pa)+". Switch tabs to get the other. ":"Scan with a phone camera to read the list as text"+(PT.length>1?" (both patients)":"")+". ")+"The code updates as you change the list."+(n>101?" This list is long, so hold the phone close to the screen.":"")}
+ catch(e){if(my!==qrSeq)return;box.innerHTML="";msg.textContent=e.message==="lib"?"The QR code tool didn’t load. Check the connection and try again.":"This list is too long for a QR code. Untick some optional items."}}
+$("qrbtn").onclick=function(){qrOpen=!qrOpen;$("qrbox").hidden=!qrOpen;this.textContent=qrOpen?"Hide QR code":"Show QR code";if(qrOpen)drawQR()};
+$("qrcopy").onclick=async function(){var b=$("qrcopy");try{await navigator.clipboard.writeText(qrText(false));b.textContent="Text copied"}catch(e){b.textContent="Copy blocked"}setTimeout(function(){b.textContent="Copy text"},1500)};
+var STEPS=[["details","Which procedure?","Start"],["core","Check the standard kit","Kit"],["opt","Add any extras","Extras"],["menus","Choose the details","Options"],["review","Review and share","Share"]],cur="details";
+function hasOpts(){return !!($("menus").children.length||!$("filesCard").hidden||!$("conesCard").hidden)}
+function stepList(){return STEPS.filter(function(x){return x[0]!=="menus"||hasOpts()})}
+function stepIdx(L){return L.map(function(x){return x[0]}).indexOf(cur)}
+function stepUI(){var L=stepList(),i=stepIdx(L);if(i<0){cur=L[0][0];i=0;document.body.setAttribute("data-cur",cur)}
+ $("steps").innerHTML="<ol>"+L.map(function(x,j){return'<li style="--t:'+(L.length>2?(j/(L.length-2)).toFixed(2):0)+'" class="'+(j<i?"done ":j===i?"cur ":"")+(x[0]==="review"?"share":"")+'"><button type="button" data-go="'+x[0]+'"'+(j===i?' aria-current="step"':"")+'>'+(j+1)+". "+x[2]+'</button></li>'}).join("")+"</ol>";
+ $("stepTitle").textContent=L[i][1];$("stepCount").textContent="Step "+(i+1)+" of "+L.length;
+ $("back").disabled=i===0;$("next").hidden=i===L.length-1;$("next").textContent=i===L.length-2?"Review list":"Next"}
+function go(k,focus){var m=$("stepMsg");
+ if(k!=="details"&&isImpl()&&!$("sys").value){m.textContent="Choose an implant system to continue.";m.hidden=false;$("sys").focus();return}
+ m.hidden=true;cur=k;document.body.setAttribute("data-cur",k);stepUI();if(focus){window.scrollTo(0,0);$("stepTitle").focus()}}
+$("steps").addEventListener("click",function(e){var b=e.target.closest("button[data-go]");if(b)go(b.dataset.go,true)});
+$("next").onclick=function(){var L=stepList(),i=stepIdx(L);if(i<L.length-1)go(L[i+1][0],true)};
+$("back").onclick=function(){var L=stepList(),i=stepIdx(L);if(i>0)go(L[i-1][0],true)};
+
+var SPECIAL=Object.keys(SUBS).concat(Object.keys(NOTED),[RD,"Paper points","GP Master Cones","Syringe handle","Impression copings","Alginate","Etch and bond"]);
+function edCur(){return $("edProc").value}
+function edList(n){if(!ED[n])ED[n]={c:P[n].c.slice(),o:P[n].o.slice()};return ED[n]}
+function edApply(n){P[n].c=ED[n].c.slice();P[n].o=ED[n].o.slice();edSave();
+ var cur=null;PT.forEach(function(t,j){t.V.forEach(function(e,i){if(e.proc===n){var oc=e.st.core,oo=e.st.opt,nc={},no={};
+  P[n].c.forEach(function(k){nc[k]=k in oc?oc[k]:(k in oo?oo[k]:true)});P[n].o.forEach(function(k){no[k]=k in oo?oo[k]:(k in oc?oc[k]:false)});
+  Object.keys(oc).forEach(function(k){if(/prosthetic kit$/.test(k))nc[k]=oc[k]});e.st.core=nc;e.st.opt=no}})});
+ if(PT.some(function(t){return t.V.some(function(e){return e.proc===n})}))draw()}
+function edRow(n,list,i){var sp=SPECIAL.indexOf(n)>-1,c=cat(n);
+ return'<div class="edrow"><input type="text" value="'+esc(n)+'" data-edn="'+list+'" data-i="'+i+'"'+(sp?' readonly title="Linked to an app feature, so it can’t be renamed"':"")+' aria-label="Item name"><button type="button" class="sec" data-edmove="'+list+'" data-i="'+i+'">'+(list==="c"?"To extras":"To standard")+'</button><button type="button" class="sec" data-edrm="'+list+'" data-i="'+i+'" aria-label="Remove '+esc(n)+'">Remove</button>'
+ +'<div class="edmeta"><span>Category</span><select data-edcat="'+esc(n)+'">'+CATORDER.filter(function(x){return x!=="@files"}).map(function(x){return'<option'+(x===c?" selected":"")+'>'+x+'</option>'}).join("")+'</select></div></div>'}
+function edDraw(){var n=edCur(),p=P[n];
+ $("edBody").innerHTML='<h3>Standard equipment (pre-ticked)</h3>'+(p.c.map(function(x,i){return edRow(x,"c",i)}).join("")||'<p class="sub">Nothing here.</p>')
+ +'<h3>Extras (tick when needed)</h3>'+(p.o.map(function(x,i){return edRow(x,"o",i)}).join("")||'<p class="sub">Nothing here.</p>')
+ +'<h3>Add an item</h3><div class="edadd"><input type="text" id="edNew" placeholder="e.g. Dycal" aria-label="New item name"><select id="edNewCat"><option value="">Category: automatic</option>'+CATORDER.filter(function(x){return x!=="@files"}).map(function(x){return'<option>'+x+'</option>'}).join("")+'</select><div class="btns"><button type="button" data-edadd="c">Add to standard</button><button type="button" class="sec" data-edadd="o">Add to extras</button></div></div><p class="sub" id="edAddMsg" role="alert"></p>'}
+function edFill(){$("edProc").innerHTML=Object.keys(P).map(function(k){return'<option value="'+esc(k)+'">'+esc(k)+(ED[k]?" •":"")+'</option>'}).join("")}
+$("edBtn").onclick=function(){var keep=sel.value;edFill();$("edProc").value=P[keep]?keep:Object.keys(P)[0];edDraw();$("edMsg").textContent="";var d=$("edDlg");if(d.showModal)d.showModal();else d.setAttribute("open","")};
+$("edDone").onclick=function(){var d=$("edDlg");if(d.close)d.close();else d.removeAttribute("open")};
+$("edDlg").addEventListener("click",function(e){if(e.target===this&&this.close)this.close()});
+$("edProc").onchange=edDraw;
+$("edBody").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var n=edCur(),d=b.dataset;
+ if(d.edrm){var L=edList(n)[d.edrm];L.splice(+d.i,1);edApply(n);edDraw();edFill();$("edProc").value=n}
+ else if(d.edmove){var o=d.edmove,t=o==="c"?"o":"c",L=edList(n),x=L[o].splice(+d.i,1)[0];L[t].push(x);edApply(n);edDraw()}
+ else if(d.edadd){var v=$("edNew").value.trim(),m=$("edAddMsg");if(!v){m.textContent="Type the item name first.";return}
+  var L=edList(n),all=L.c.concat(L.o).map(function(z){return z.toLowerCase()});if(all.indexOf(v.toLowerCase())>-1){m.textContent="That item is already in this procedure.";return}
+  L[d.edadd].push(v);var c=$("edNewCat").value;if(c)CUSTCAT[v]=c;edApply(n);edDraw();edFill();$("edProc").value=n}});
+$("edBody").addEventListener("change",function(e){var t=e.target,n=edCur();
+ if(t.dataset.edn&&!t.readOnly){var L=edList(n)[t.dataset.edn],i=+t.dataset.i,old=L[i],v=t.value.trim();
+  if(!v||v===old){t.value=old;return}var all=edList(n).c.concat(edList(n).o).map(function(z){return z.toLowerCase()});if(all.indexOf(v.toLowerCase())>-1){t.value=old;return}
+  if(CUSTCAT[old]){CUSTCAT[v]=CUSTCAT[old];delete CUSTCAT[old]}else CUSTCAT[v]=cat(old);L[i]=v;edApply(n);edDraw();edFill();$("edProc").value=n}
+ else if(t.dataset.edcat){CUSTCAT[t.dataset.edcat]=t.value;edSave();draw()}});
+$("edResetP").onclick=function(){var n=edCur();ED[n]={c:PDEF[n].c.slice(),o:PDEF[n].o.slice()};edApply(n);delete ED[n];edSave();edFill();$("edProc").value=n;edDraw();$("edMsg").textContent="This procedure is back to the standard list."};
+$("edResetAll").onclick=function(){ED={};CUSTCAT={};Object.keys(P).forEach(function(n){P[n].c=PDEF[n].c.slice();P[n].o=PDEF[n].o.slice();ED[n]={c:P[n].c,o:P[n].o};edApply(n)});ED={};edSave();var n=edCur();edFill();$("edProc").value=n;edDraw();$("edMsg").textContent="Everything is back to the standard lists."};
+$("edCopy").onclick=function(){var t=JSON.stringify({p:ED,cat:CUSTCAT}),m=$("edMsg");try{navigator.clipboard.writeText(t).then(function(){m.textContent="Backup copied."},function(){m.textContent="Copy blocked. Select and copy it from the box below."});$("edRestore").value=t}catch(e){$("edRestore").value=t;m.textContent="Copy blocked. Select and copy it from the box below."}};
+$("edLoad").onclick=function(){var m=$("edMsg");try{var j=JSON.parse($("edRestore").value);if(!j||typeof j.p!=="object")throw 1;var ok=0;Object.keys(j.p).forEach(function(n){var q=j.p[n];if(P[n]&&q&&Array.isArray(q.c)&&Array.isArray(q.o)){ED[n]={c:q.c.map(String),o:q.o.map(String)};edApply(n);ok++}});Object.keys(j.cat||{}).forEach(function(k){CUSTCAT[k]=String(j.cat[k])});edSave();var n=edCur();edFill();$("edProc").value=n;edDraw();m.textContent="Restored "+ok+" procedure"+(ok===1?"":"s")+"."}catch(e){m.textContent="That doesn’t look like a backup."}};
+// opened from Notile: #root-canal-treatment-obturation (procedure name as a slug) selects that procedure
+function procSlug(n){return String(n).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}
+function procFromHash(){var h=(location.hash||"").slice(1);if(!h)return null;var m=null;Object.keys(P).forEach(function(n){if(procSlug(n)===h)m=n});return m}
+(function(){var p=procFromHash();if(p)sel.value=p;init();go("details");if(p){var m=$("stepMsg");m.textContent="Opened from Notile with "+p+". Check the tooth and details, then continue.";m.hidden=false}})();
+window.addEventListener("hashchange",function(){var p=procFromHash();if(p&&p!==sel.value){sel.value=p;init();go("details",true)}});
+</script>
+</body>
+</html>
+
+</body></html>
