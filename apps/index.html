@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B2E4A">
+<title>Dental Apps</title>
+<meta name="description" content="Notile, Dental Set-App, Chrome Card and Ortho Card.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230B2E4A'/%3E%3Cpath d='M8 6c-1.7 0-2.7 1.3-2.7 3 0 2 1 3 1.4 5 .3 1.8.7 4 1.7 4s1.1-2.3 1.7-3.7c.3-.7 1.1-.7 1.4 0 .6 1.4.7 3.7 1.7 3.7s1.4-2.2 1.7-4c.4-2 1.4-3 1.4-5 0-1.7-1-3-2.7-3-1.3 0-2 .7-3.4.7S9.3 6 8 6z' fill='none' stroke='%233FA9A0' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --navy:#0B2E4A; --ink:#1B2A36; --muted:#4A5D6C; --bg:#F4F7F9;
+  --serif:'Source Serif 4',Cambria,Georgia,serif;
+  --sans:'Source Sans 3',Calibri,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;min-height:100%;display:flex;flex-direction:column;
+  background:var(--bg);color:var(--ink);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 16px}
+h1{margin:0 0 48px;font-family:var(--serif);font-weight:600;font-size:clamp(28px,4vw,36px);color:var(--navy);text-align:center}
+.apps{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px 48px;
+}
+@media (max-width:720px){.apps{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 40px}}
+.app{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  text-decoration:none;color:var(--ink);border-radius:28px;padding:8px;
+  -webkit-tap-highlight-color:transparent;
+}
+.tile{
+  width:120px;height:120px;border-radius:28px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 4px rgba(11,46,74,.10),0 14px 30px rgba(11,46,74,.16);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+@media (max-width:720px){.tile{width:100px;height:100px;border-radius:24px}}
+.app:hover .tile{transform:translateY(-3px);box-shadow:0 4px 8px rgba(11,46,74,.12),0 20px 40px rgba(11,46,74,.20)}
+.app:active .tile{transform:scale(.96)}
+.app:focus-visible{outline:3px solid #3FA9A0;outline-offset:4px}
+.tile svg{width:56%;height:56%}
+.name{font-weight:600;font-size:17px;text-align:center;line-height:1.25}
+.sub{display:block;font-weight:400;font-size:14px;color:var(--muted);margin-top:2px}
+.t-notile{background:#0B2E4A}
+.t-setapp{background:#1C7293}
+.t-chrome{background:#5E6E7C}
+.t-ortho{background:#2A8C84}
+@media (prefers-reduced-motion:reduce){.tile{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Dental Apps</h1>
+  <ul class="apps">
+    <li>
+      <a class="app" href="https://54g8yd8b69-bot.github.io/notile/">
+        <span class="tile t-notile" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M27 7H14a4 4 0 0 0-4 4v26a4 4 0 0 0 4 4h20a4 4 0 0 0 4-4V18z"/><path d="M27 7v11h11"/><path d="M17 26h14M17 33h9" stroke="#7FD3CB"/></svg>
+        </span>
+        <span class="name">Notile<span class="sub">with Notile Chart</span></span>
+      </a>
+    </li>
+    <li>
+      <a class="app" href="https://54g8yd8b69-bot.github.io/set-app/">
+        <span class="tile t-setapp" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="13" height="13" rx="2"/><rect x="28" y="7" width="13" height="13" rx="2"/><rect x="7" y="28" width="13" height="13" rx="2"/><path d="M28 28h6v6M41 28v.01M34 41h7v-7M28 35v6" stroke="#CFEDEA"/></svg>
+        </span>
+        <span class="name">Dental Set-App</span>
+      </a>
+    </li>
+    <li>
+      <a class="app" href="https://54g8yd8b69-bot.github.io/chrome-card/">
+        <span class="tile t-chrome" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 17c4-6 10-9 16-9s12 3 16 9"/><path d="M12 17v7c0 7 5.5 12 12 12s12-5 12-12v-7"/><path d="M18 23h12" stroke="#E2E8ED"/><circle cx="12" cy="17" r="2.2" fill="#FFFFFF"/><circle cx="36" cy="17" r="2.2" fill="#FFFFFF"/></svg>
+        </span>
+        <span class="name">Chrome Card</span>
+      </a>
+    </li>
+    <li>
+      <a class="app" href="https://54g8yd8b69-bot.github.io/ortho-card/">
+        <span class="tile t-ortho" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 29c6-12 30-12 36 0"/><circle cx="14" cy="24" r="2.4"/><circle cx="24" cy="21" r="2.4"/><circle cx="34" cy="24" r="2.4"/><path d="M10 35c8 5 20 5 28 0" stroke="#D4F0EC"/></svg>
+        </span>
+        <span class="name">Ortho Card</span>
+      </a>
+    </li>
+  </ul>
+</main>
+</body>
+</html>
