@@ -1,4 +1,5 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none'; frame-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -298,9 +299,9 @@ button:active:not(:disabled){transform:scale(.97)}
 </dialog>
 <div class="wizbar"><div><button type="button" class="sec" id="back">Back</button><span class="mid" id="stepCount"></span><button type="button" id="next">Next</button></div></div>
 <p class="note">Item lists are starting templates. Check them against your own department’s protocols and local infection control policy before use.</p>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="vendor/qrcode-generator-1.4.4.js"></script>
 <script>
-var LISTURL="https://54g8yd8b69-bot.github.io/set-app/list.html";
+var LISTURL=(location.protocol==="https:"?location.origin:"https://notile.co.uk")+"/set-app/list.html";
 var REMOVED=["Lip lubricant","Impression disinfectant and lab bag","Curing light and shield","Cotton rolls and gauze","Photography equipment","Lab prescription form","Disclosing wax","Denture cleaner","Implant analogues"];
 var EXAM="Exam kit",REST="Restorative kit",ENDO="Endodontic kit",RD="Rubber dam kit",HS="Fast handpiece",SS="Slow-speed handpiece",AP="Articulating paper",BB="Bite block",SH="Shade guide";
 var LAC=["LA cartridges","Topical anaesthetic"];

@@ -1,21 +1,11 @@
-# Security Policy
+# Security
 
-## Supported Versions
+These apps (Notile, Notile Chart, Dental Set-App, Chrome Card and Ortho Card) are static pages served by GitHub Pages at notile.co.uk.
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+- Everything runs in the browser. There are no accounts, servers or databases.
+- Each page carries a Content Security Policy that forbids network connections (`connect-src 'none'`), third-party scripts, styles, fonts and frames. Fonts and the QR code library are served from this site.
+- Drafts and settings are kept in the browser's local storage on the device in use. Do not enter patient names, CHI or hospital numbers.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+## Reporting a problem
 
-## Reporting a Vulnerability
-
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Please report security issues privately through GitHub's **Report a vulnerability** button on the repository's Security tab, rather than in a public issue.
