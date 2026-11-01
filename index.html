@@ -273,7 +273,7 @@ button:active:not(:disabled){transform:scale(.97)}
     <div id="qrbox" hidden>
       <div id="qrimg"></div>
       <p class="sub" id="qrmsg"></p>
-      <button type="button" class="sec" id="qrcopy">Copy text</button>
+      <button type="button" class="sec" id="qrcopy">Copy link</button>
     </div>
   </aside>
 </main>
@@ -300,7 +300,7 @@ button:active:not(:disabled){transform:scale(.97)}
 <p class="note">Item lists are starting templates. Check them against your own department’s protocols and local infection control policy before use.</p>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script>
-var LISTURL="https://claude.ai/artifact/CFt2aoPd2jFufyRncad73e";
+var LISTURL="https://54g8yd8b69-bot.github.io/set-app/list.html";
 var REMOVED=["Lip lubricant","Impression disinfectant and lab bag","Curing light and shield","Cotton rolls and gauze","Photography equipment","Lab prescription form","Disclosing wax","Denture cleaner","Implant analogues"];
 var EXAM="Exam kit",REST="Restorative kit",ENDO="Endodontic kit",RD="Rubber dam kit",HS="Fast handpiece",SS="Slow-speed handpiece",AP="Articulating paper",BB="Bite block",SH="Shade guide";
 var LAC=["LA cartridges","Topical anaesthetic"];
@@ -590,16 +590,16 @@ function qrText(only){var idx=only?[pa]:PT.map(function(x,j){return j});return a
 async function drawQR(){var my=++qrSeq,box=$("qrimg"),msg=$("qrmsg");
  try{if(typeof qrcode!=="function")throw new Error("lib");
   var q=null,only=false;
-  for(var md=0;md<2&&!q;md++){if(md===1&&PT.length<2)break;var url=qrText(md===1);
+  for(var md=0;md<2&&!q;md++){if(md===1&&PT.length<2)break;var url=await makeUrl(md===1);if(my!==qrSeq)return;
    ["M","L"].forEach(function(l){if(q)return;try{var z=qrcode(0,l);z.addData(url);z.make();q=z}catch(e){}});only=md===1&&!!q}
   if(!q)throw new Error("long");
   var n=q.getModuleCount(),m=4,sz=n+2*m,d="";
   for(var r=0;r<n;r++)for(var c=0;c<n;c++)if(q.isDark(r,c))d+="M"+(c+m)+" "+(r+m)+"h1v1h-1z";
   box.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+sz+' '+sz+'" shape-rendering="crispEdges" role="img" aria-label="QR code for the final set-up list"><rect width="'+sz+'" height="'+sz+'" fill="#fff"/><path d="'+d+'" fill="#000"/></svg>';
-  msg.textContent=(only?"Both patients are too long for one code, so this QR shows only "+ptLabel(pa)+". Switch tabs to get the other. ":"Scan with a phone camera to read the list as text"+(PT.length>1?" (both patients)":"")+". ")+"The code updates as you change the list."+(n>101?" This list is long, so hold the phone close to the screen.":"")}
+  msg.textContent=(only?"Both patients are too long for one code, so this QR shows only "+ptLabel(pa)+". Switch tabs to get the other. ":"Scan with a phone camera to open a page showing only the final list"+(PT.length>1?", with a tab for each patient":"")+". ")+"The code updates as you change the list."+(n>101?" This list is long, so hold the phone close to the screen.":"")}
  catch(e){if(my!==qrSeq)return;box.innerHTML="";msg.textContent=e.message==="lib"?"The QR code tool didn’t load. Check the connection and try again.":"This list is too long for a QR code. Untick some optional items."}}
 $("qrbtn").onclick=function(){qrOpen=!qrOpen;$("qrbox").hidden=!qrOpen;this.textContent=qrOpen?"Hide QR code":"Show QR code";if(qrOpen)drawQR()};
-$("qrcopy").onclick=async function(){var b=$("qrcopy");try{await navigator.clipboard.writeText(qrText(false));b.textContent="Text copied"}catch(e){b.textContent="Copy blocked"}setTimeout(function(){b.textContent="Copy text"},1500)};
+$("qrcopy").onclick=async function(){var b=$("qrcopy");try{await navigator.clipboard.writeText(await makeUrl());b.textContent="Link copied"}catch(e){b.textContent="Copy blocked"}setTimeout(function(){b.textContent="Copy link"},1500)};
 var STEPS=[["details","Which procedure?","Start"],["core","Check the standard kit","Kit"],["opt","Add any extras","Extras"],["menus","Choose the details","Options"],["review","Review and share","Share"]],cur="details";
 function hasOpts(){return !!($("menus").children.length||!$("filesCard").hidden||!$("conesCard").hidden)}
 function stepList(){return STEPS.filter(function(x){return x[0]!=="menus"||hasOpts()})}
