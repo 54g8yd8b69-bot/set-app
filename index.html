@@ -1,6 +1,13 @@
-<!doctype html><html><head><meta charset=utf8><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none'; frame-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<!doctype html><html><head><meta charset=utf8><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none'; frame-src 'self'; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="no-referrer"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}a.homelink{color:inherit;text-decoration:none}a.homelink:hover{opacity:.8}a.homelink:focus-visible{outline:2px solid currentColor;outline-offset:3px;border-radius:6px}
-</style></head><body>
+h1{font-family:Cambria,"Source Serif 4",Georgia,serif}
+</style><link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0B2E4A">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Notile">
+</head><body>
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -9,13 +16,13 @@
 <!-- v2: merged onto live version; single-page editor, QR opens list page -->
 <title>Dental Set-App</title>
 <style>
-:root{--navy:#22343D;--teal:#0B827E;--teal2:#8AD3CE;--bg:#FAFCFC;--card:#fff;--ink:#2A3A43;--mute:#6A7C87;--line:#E9EFF2;--sel:#EEF8F7;--shadow:0 1px 2px rgba(34,52,61,.04);
+:root{--navy:#0B2E4A;--teal:#1C7293;--teal2:#3FA9A0;--bg:#F3F7F9;--card:#fff;--ink:#10273A;--mute:#566C7D;--line:#D5E0E7;--sel:#E8F2F6;--shadow:0 1px 2px rgba(34,52,61,.04);
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--navy:#E8F1F4;--teal:#3CC4BC;--teal2:#2BB3AC;--bg:#0D1317;--card:#151D22;--ink:#E8F1F4;--mute:#97A8B2;--line:#27343B;--sel:#12363A;--shadow:0 1px 3px rgba(0,0,0,.5)}}
-:root[data-theme="dark"]{--navy:#E8F1F4;--teal:#3CC4BC;--teal2:#2BB3AC;--bg:#0D1317;--card:#151D22;--ink:#E8F1F4;--mute:#97A8B2;--line:#27343B;--sel:#12363A;--shadow:0 1px 3px rgba(0,0,0,.5)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--navy:#E3ECF2;--teal:#4FB3C9;--teal2:#5CC3B7;--bg:#08141D;--card:#0F2130;--ink:#E3ECF2;--mute:#93A9B9;--line:#24394A;--sel:#13324A;--shadow:0 1px 3px rgba(0,0,0,.5)}}
+:root[data-theme="dark"]{--navy:#E3ECF2;--teal:#4FB3C9;--teal2:#5CC3B7;--bg:#08141D;--card:#0F2130;--ink:#E3ECF2;--mute:#93A9B9;--line:#24394A;--sel:#13324A;--shadow:0 1px 3px rgba(0,0,0,.5)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 Calibri,Carlito,"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
 h1,h2,h3{font-family:inherit;font-weight:600;color:var(--navy);margin:0;line-height:1.25}
 header{background:var(--card);color:var(--ink);padding:16px 20px;border-bottom:1px solid var(--line)}
 header h1{color:var(--navy);font-size:1.4rem;font-weight:600;letter-spacing:-.01em}
@@ -664,4 +671,5 @@ window.addEventListener("hashchange",function(){var p=procFromHash();if(p&&p!==s
 </body>
 </html>
 
+<script>if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));</script>
 </body></html>
