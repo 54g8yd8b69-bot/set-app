@@ -334,11 +334,13 @@ var P={
 "Implant impressions":{m:["mats"],def:[["mats","imp"]],c:[EXAM,"Impression trays",SH],o:["Impression copings"].concat(LAC,["Scan body","Intraoral scanner","Light cure resin and floss (to splint copings)",BB])},
 "Implant provisional fit":{c:[EXAM,"Labwork","Floss",AP,SS,"Fast handpiece","Fine polishing burs"],o:LAC.concat(["Replacement healing abutment","Temporary cement","Adjustment burs","Scalpel",BB])},
 "Implant definitive crown fit":{c:[EXAM,"Labwork","Floss",AP,SS,"Fast handpiece","Fine polishing burs"],o:LAC.concat(["Cement and mixing pad (if cement retained)","Replacement healing abutment","Adjustment burs",SH,BB,"Scalpel"])},
+"Implant placement":{c:LAC.concat([EXAM,"Surgical instrument tray (scalpel handle, periosteal elevator, retractors, tissue forceps, needle holder, suture scissors)","Scalpel blades (15C)","Sterile drapes and gown","Implant motor (physiodispenser) and 20:1 surgical handpiece","Sterile saline irrigation","Surgical aspirator tip","Implant fixture (checked against plan)","Cover screw or healing abutment","Implant screwdriver","Sutures","Gauze","Chlorhexidine mouthwash (pre-op rinse)"]),o:["Long needle","Surgical guide (stent)","Bone graft material","Resorbable membrane","Membrane tacks","Bone collector","Osteotomes","Tissue punch","Torque wrench","Haemostatic agent","Periapical film holder","Post-op instruction leaflet","Ice pack"]},
+"Implant second stage (uncovery)":{c:LAC.concat([EXAM,"Surgical instrument tray (scalpel handle, periosteal elevator, retractors, tissue forceps, needle holder, suture scissors)","Scalpel blades (15C)","Healing abutments (range of heights)","Implant screwdriver","Sterile saline irrigation","Surgical aspirator tip","Sutures","Gauze"]),o:["Tissue punch","Torque wrench","Electrosurgery unit","Periapical film holder","Post-op instruction leaflet"]},
 "Fibre post (Parapost Fibre Lux)":{m:["cems","clamp"],clampAlways:1,c:LAC.concat([REST,RD,HS,SS,"Parapost Fibre Lux kit","Parapost drills","Parapost Fibre Lux post","Irrigation syringes","Sodium hypochlorite","Paper points","Etch and bond","Core build-up material"]),o:["Heated plugger (GP removal)","Gates Glidden drills","Piezo and tips","Chlorhexidine","Isopropyl alcohol (post cleaning)","Flowable composite","Wooden wedges","Sectional matrix (Palodent V3)","Omni-Matrix","PTFE tape","Retraction cord","Floss"]}
 };
-var G=[["Endodontics",["Root canal treatment: first stage","Root canal treatment: obturation"]],["Direct restorations",["Direct composite restoration"]],["Post and core",["Fibre post (Parapost Fibre Lux)"]],["Indirect restorations: preparation",["Onlay preparation","Crown preparation","Resin bonded bridge preparation"]],["Indirect restorations: fit",["Onlay fit","Crown fit","Resin bonded bridge fit","Conventional bridge fit"]],["Dentures",["Primary impressions","Secondary impressions","Jaw registration","Metal framework try-in","Wax try-in","Denture fit","Denture review"]],["Implant prosthetics",["Implant impressions","Implant provisional fit","Implant definitive crown fit"]]];
-var IMPL=["Implant impressions","Implant provisional fit","Implant definitive crown fit"],SYS=["Straumann","Nobel Biocare","Astra Tech","BioHorizons"];
-IMPL.forEach(function(n){P[n].o=P[n].o.concat(["PTFE tape","Clip","Straight handpiece","Composite"])});
+var G=[["Endodontics",["Root canal treatment: first stage","Root canal treatment: obturation"]],["Direct restorations",["Direct composite restoration"]],["Post and core",["Fibre post (Parapost Fibre Lux)"]],["Indirect restorations: preparation",["Onlay preparation","Crown preparation","Resin bonded bridge preparation"]],["Indirect restorations: fit",["Onlay fit","Crown fit","Resin bonded bridge fit","Conventional bridge fit"]],["Dentures",["Primary impressions","Secondary impressions","Jaw registration","Metal framework try-in","Wax try-in","Denture fit","Denture review"]],["Implant surgery",["Implant placement","Implant second stage (uncovery)"]],["Implant prosthetics",["Implant impressions","Implant provisional fit","Implant definitive crown fit"]]];
+var IMPLP=["Implant impressions","Implant provisional fit","Implant definitive crown fit"],SURG=["Implant placement","Implant second stage (uncovery)"],IMPL=IMPLP.concat(SURG),SYS=["Straumann","Nobel Biocare","Astra Tech","BioHorizons"];
+IMPLP.forEach(function(n){P[n].o=P[n].o.concat(["PTFE tape","Clip","Straight handpiece","Composite"])});
 function keep(x){return REMOVED.indexOf(x)<0}
 ["Onlay fit","Crown fit","Conventional bridge fit","Resin bonded bridge fit","Implant provisional fit","Implant definitive crown fit"].forEach(function(n){var q=P[n];if(q&&q.c.indexOf("PTFE tape")<0&&q.o.indexOf("PTFE tape")<0)q.o=q.o.concat(["PTFE tape"])});
 Object.keys(P).forEach(function(n){var q=P[n];if(q.c.indexOf("Labwork")<0&&q.o.indexOf("Labwork")<0)q.o=q.o.concat(["Labwork"]);});
@@ -390,8 +392,8 @@ function init(){V[vi].proc=sel.value;var p=PR(),tt=st.teeth||{};st.teeth=tt;st.h
  (p.def||[]).forEach(function(d){(st.mm[d[0]]=st.mm[d[0]]||{})[d[1]]=true});
  applySys();draw()}
 function isImpl(){return IMPL.indexOf(sel.value)>-1}
-function applySys(){var kit=isImpl()&&$("sys").value?$("sys").value+" prosthetic kit":null,keep2={};if(kit)keep2[kit]=true;Object.keys(st.core).forEach(function(k){if(!/prosthetic kit$/.test(k))keep2[k]=st.core[k]});st.core=keep2;$("sysWrap").hidden=!isImpl()}
-function dn(n){return n==="Impression copings"&&isImpl()&&$("sys").value?$("sys").value+" impression copings":n}
+function applySys(){var kit=isImpl()&&$("sys").value?$("sys").value+(SURG.indexOf(sel.value)>-1?" surgical kit":" prosthetic kit"):null,keep2={};if(kit)keep2[kit]=true;Object.keys(st.core).forEach(function(k){if(!/(prosthetic|surgical) kit$/.test(k))keep2[k]=st.core[k]});st.core=keep2;$("sysWrap").hidden=!isImpl()}
+function dn(n){if(isImpl()&&$("sys").value){if(n==="Impression copings")return $("sys").value+" impression copings";if(n==="Implant fixture (checked against plan)")return $("sys").value+" implant fixture (checked against plan)"}return n}
 function nm(n){var v=(st.notes[n]||"").trim(),d=dn(n);return v?d+" ("+v+")":d}
 
 function itemLi(n,key){var S=SUBS[n],nt=NOTED[n]&&(key==="opt"||key==="acc"||(key==="core"&&NOTEDC[n])),on=st[key][n],cc=key==="acc"?"":CATCOL[cat(dn(n))];
@@ -458,17 +460,18 @@ function derived(){var p=PR(),d=[];function add(x){if(d.indexOf(x)<0)d.push(x)}
  return d}
 function updateAuto(){var el=$("auto-mats");if(!el)return;var d=derived().filter(function(x){return!/^(Etch|Bond|Flowable composite|Syringe handle)$/.test(x)});el.textContent=d.length?"Added automatically: "+d.join(", "):""}
 var CATS=[
-["Kits & instruments",/^(exam|restorative|endodontic) kit$|parapost fibre lux kit|wax knife|patient mirror|scalpel/i],
+["Kits & instruments",/^(exam|restorative|endodontic) kit$|parapost fibre lux kit|wax knife|patient mirror|scalpel|instrument tray/i],
+["Surgical consumables",/suture|drape|gown|sterile saline|aspirator tip|gauze|mouthwash|bone graft|membrane|bone collector|osteotome|tissue punch|haemostatic|surgical guide|electrosurgery|post-op|ice pack|film holder/i],
 ["Local anaesthetic",/cartridge|anaesthetic|syringe handle|needle/i],
 ["Rubber dam & isolation",/rubber dam|opaldam|clamp|retraction cord|bite block|optragate/i],
-["Implant components",/prosthetic kit|coping|scan body|abutment/i],
+["Implant components",/prosthetic kit|surgical kit|coping|scan body|abutment|implant fixture|cover screw|screwdriver|torque wrench/i],
 ["Endodontic equipment & materials",/hypochlorite|edta|chlorhexidine|paper points|gutta percha|alpha, beta|sealer|calcium hydroxide|irrigation syringe|endo ruler|file sponge|gp master cones|access bur kit|piezo|apex locator|endo motor|warm vertical|mta|gates glidden|plugger/i],
-["Handpieces, burs & equipment",/handpiece|\bburs?\b|\bdrills?\b|scanner|scaler|ultrasonic|hot plate|bunsen|heat source|no flame|hot water|sandblaster|light cure/i],
+["Handpieces, burs & equipment",/implant motor|handpiece|\bburs?\b|\bdrills?\b|scanner|scaler|ultrasonic|hot plate|bunsen|heat source|no flame|hot water|sandblaster|light cure/i],
 ["Cements & temporary materials",/temporary|provisional|maxi-temp|durlay|tempbond|\bclip\b|\birm\b|cavit|cement|panavia|nexus|silane|primer/i],
 ["Prosthetics & lab work",/occlude|labwork|lab work|shade guide|mould guide|articulating paper|face bow|gothic arch|articulator|fox|willis|pressure indicating|occlusal indicator|denture|reline|tissue conditioner|polishing kit|study casts/i],
 ["Impression & registration",/impression|impregum|memosil|putty|silicone|alginate|tray|wax|compound|green stick|zinc oxide|vaseline|bite registration|mixing/i],
 ["Restorative materials",/floss|\bpost\b|alcohol|composite|\betch\b|\bbond\b|flowable|matrix|wedge|strips|ipr|mylar|biodentine|glass ionomer|\bgic\b|core build-up|ptfe|teflon|glycerine|pumice|prophy/i]
-],CATORDER=["Kits & instruments","Local anaesthetic","Rubber dam & isolation","Endodontic equipment & materials","@files","Handpieces, burs & equipment","Restorative materials","Impression & registration","Cements & temporary materials","Prosthetics & lab work","Implant components","Other"];
+],CATORDER=["Kits & instruments","Surgical consumables","Local anaesthetic","Rubber dam & isolation","Endodontic equipment & materials","@files","Handpieces, burs & equipment","Restorative materials","Impression & registration","Cements & temporary materials","Prosthetics & lab work","Implant components","Other"];
 function cat(x){if(CUSTCAT[x])return CUSTCAT[x];for(var i=0;i<CATS.length;i++)if(CATS[i][1].test(x))return CATS[i][0];return"Other"}
 function secsOne(){var p=PR(),E=[],all={},custom=st.custom.slice(),S=[];
  lines(st.core).forEach(function(x){E.push([x,cat(x)])});
