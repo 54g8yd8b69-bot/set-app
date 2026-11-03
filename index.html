@@ -383,7 +383,7 @@ var FG=[
 {k:"cp",t:"C+ files (ISO size)",n:"C+ files",pre:"C+ file ISO ",s:["8","10","15","20"],l:["18","21","25"],d:"21"},
 {k:"gg",t:"Gates Glidden drills (size)",n:"Gates Glidden",pre:"Gates Glidden size ",s:["1","2","3","4","5","6"],l:["15","19","25"],d:"19",after:1}
 ];
-var ROTS=[["ProTaper Gold","ProTaper Gold",["S1","S2","F1","F2","F3","F4","F5"]],["Reciproc","Reciproc",["R25","R40","R50"]],["Reciproc Blue","Reciproc Blue",["R25","R40","R50"]],["WaveOne Gold","WaveOne Gold",["Small","Primary","Medium","Large"]],["XP-endo Shaper","XP-endo Shaper",["30/.01"]],["ProTaper D files (retreatment)","ProTaper",["D1","D2","D3"]]],ROTL=[];
+var ROTS=[["ProTaper Gold","ProTaper Gold",["S1","S2","F1","F2","F3","F4","F5"]],["Reciproc","Reciproc",["R25","R40","R50"]],["Reciproc Blue","Reciproc Blue",["R25","R40","R50"]],["WaveOne Gold","WaveOne Gold",["Small","Primary","Medium","Large"]],["ProTaper D files (retreatment)","ProTaper",["D1","D2","D3"]]],ROTL=[];
 ROTS.forEach(function(g){g[2].forEach(function(n){ROTL.push(g[1]+" "+n)})});
 var ROTLEN=["21","25","31"];
 var ACC=["SX file","ProGlider","Pathfile","XP-endo Shaper"];
@@ -544,7 +544,7 @@ function renderPT(){syncPT();var multi=PT.length>1;
 var SEQ=0;
 function fileCol(t){t=String(t).replace(/ · .*$/,"");var m=/^(?:K file|Hedstrom file|C\+ file) ISO (\d+)/.exec(t)||/^ISO (\d+) master GP cone/.exec(t),k;if(m)k=ISOSEQ[+m[1]];else k=ROTC[t.replace(/ (?:master GP cone|paper points)$/,"").replace(/ \([\d + ]+ mm\)$/,"")];return k&&ISOC[k]?ISOC[k]:null}
 function swatch(t){var c=fileCol(t);return c?'<i class="sw" style="background:'+c[0]+(c[2]?';border-color:'+c[2]:'')+'"></i>':""}
-var IMGMAP={"Sectional matrix (Palodent V3)":"palodent-v3","Palodent V3 accessory kit (forceps, tweezers and rings)":"palodent-v3","XP-endo Shaper 30/.01":"xp-endo-shaper"},IMGHAVE=["palodent-v3","xp-endo-shaper"];
+var IMGMAP={"Sectional matrix (Palodent V3)":"palodent-v3","Palodent V3 accessory kit (forceps, tweezers and rings)":"palodent-v3","XP-endo Shaper":"xp-endo-shaper"},IMGHAVE=["palodent-v3","xp-endo-shaper"];
 function imgFor(t){var f=IMGMAP[String(t).replace(/ · .*$/,"").replace(/ \(\d+ mm\)$/,"")];return f&&IMGHAVE.indexOf(f)>-1?f:null}
 function showImg(name){var f=imgFor(name),d=document.getElementById("imgDlg");if(!f||!d)return;d.querySelector("h2").textContent=String(name).replace(/ · .*$/,"");d.querySelector("img").src="images/"+f+".jpg";d.querySelector("img").alt=name;if(d.showModal)d.showModal();else d.setAttribute("open","")}
 function section(t,a){return'<h3>'+esc(t)+' ('+a.length+')</h3>'+(a.length?'<ul>'+a.map(function(x){return'<li style="--i:'+Math.min(SEQ++,14)+'"><label style="display:flex;gap:10px;align-items:center;flex:1;min-width:0"><input type="checkbox">'+swatch(x)+'<span>'+esc(x)+'</span></label>'+(imgFor(x)?'<button type="button" class="imgb" data-img="'+esc(x)+'" aria-label="Show photo of '+esc(x)+'"><img src="images/'+imgFor(x)+'.jpg" alt="" loading="lazy"></button>':"")+'<button type="button" class="rmx" data-rmx="'+esc(x)+'" aria-label="Remove '+esc(x)+' from this list" title="Remove from this list">×</button></li>'}).join("")+'</ul>':'<p class="empty">Nothing selected.</p>')}
