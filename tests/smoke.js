@@ -11,5 +11,8 @@ run({name:'Dental Set-App',fn:async()=>{
   await test('rotary file buttons show tip/taper, nurse list does not',async()=>{const pg=await page('/set-app/#root-canal-treatment-first-stage');await pg.waitForTimeout(200);
     const btn=pg.locator('[data-n="WaveOne Gold Primary"]').locator('xpath=..');expect((await btn.innerText()).includes('25/.07'),'spec missing on button');
     await pg.evaluate(()=>document.querySelector('[data-n="WaveOne Gold Primary"]').click());await pg.waitForTimeout(150);const all=JSON.stringify(await pg.evaluate(()=>secs()));expect(all.includes('WaveOne Gold Primary'),'file not in list');expect(!/\d\/\.0\d/.test(all),'spec leaked into list');await noErrors(pg)});
+  await test('GP extras offered for obturation',async()=>{const pg=await page('/set-app/#root-canal-treatment-obturation');await pg.waitForTimeout(200);
+    for(const n of ['2% taper GP cones','Accessory GP points','Finger spreaders']){expect(await pg.locator(`#opt [data-n="${n}"]`).count()===1,n+' missing');expect(await pg.evaluate(x=>cat(x),n)==='Endodontic equipment & materials',n+' wrong category')}
+    await noErrors(pg)});
   await test('nurse list page opens',async()=>{const pg=await page('/set-app/list.html');await noErrors(pg)});
 }});
