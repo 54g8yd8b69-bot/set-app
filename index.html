@@ -86,6 +86,7 @@ button.sec{background:transparent;color:var(--teal);border:1px solid var(--teal)
 .sheet ul{list-style:none;margin:0;padding:0}
 .imgb{flex:none;width:44px;height:44px;padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;min-height:0}.imgb img{width:100%;height:100%;object-fit:cover;display:block}
 @media print{.imgb{display:none!important}}
+.cn{display:block;font-size:.8rem;color:var(--mute);font-weight:400}
 .sheet li{display:flex;gap:10px;align-items:center;padding:5px 0;border-bottom:1px dotted var(--line)}
 .sw{flex:none;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(0,0,0,.25);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .sheet li .rmx{margin-left:auto;flex:none;min-height:36px;min-width:36px;padding:0 8px;background:none;color:var(--mute);border:1px solid transparent;border-radius:8px;font-size:1.2rem;line-height:1}
@@ -362,12 +363,12 @@ try{var _j=JSON.parse(localStorage.getItem(EDKEY)||"{}");ED=_j.p||{};CUSTCAT=_j.
 Object.keys(ED).forEach(function(n){if(P[n]&&ED[n]&&Array.isArray(ED[n].c)&&Array.isArray(ED[n].o)){P[n].c=ED[n].c.slice();P[n].o=ED[n].o.slice()}else delete ED[n]});
 function edSave(){try{localStorage.setItem(EDKEY,JSON.stringify({p:ED,cat:CUSTCAT}))}catch(e){}}
 
-var CLAMPS=["00","0","1","2","2A","3","7","8A","9","12A","14","14A","26","27","W8A","56","200","212"];
+var CLAMPS=[["A","Universal molar clamp"],["Aw","Universal molar wingless clamp"],["Bw/Dw","Small premolar wingless clamp"],["C","Butterfly incisor/canine clamp"],["E","Small universal clamp"],["Ew","Small universal wingless clamp"],["FW/JW","Large wingless molar clamp"],["G/Gw","Premolar/canine clamp"],["K","Molar clamp"],["M","Small universal clamp"]];
 var MATS=[["imp","Impregum"],["putty","Putty"],["lb","Light body silicone"],["mb","Medium body silicone"],["hb","Heavy body silicone"],["alg","Alginate"],["bite","Bite registration silicone"],["wax","Pink sheet wax"]];
 var MATX=[["comp","Compound (red)"],["green","Green stick"],["zoe","Zinc oxide eugenol"]];
 var RELYX=["Onlay fit","Crown fit","Conventional bridge fit","Fibre post (Parapost Fibre Lux)"];
 var MENUS={
-clamp:{cat:"Rubber dam & isolation",t:"Rubber dam clamp",s:"Choose the clamp number, or no clamp needed.",ex:"none",o:function(){return CLAMPS.map(function(x){return[x,"Clamp "+x]}).concat([["none","No clamp needed"]])}},
+clamp:{cat:"Rubber dam & isolation",t:"Rubber dam clamp",s:"Choose the clamp, or no clamp needed.",ex:"none",wide:1,o:function(){return CLAMPS.map(function(x){return[x[0],"Clamp "+x[0]+" ("+x[1]+")",x[1]]}).concat([["none","No clamp needed"]])}},
 mats:{cat:"Impression & registration",t:"Impression materials",s:"Tray adhesive and vaseline are added automatically.",wide:1,o:function(){return MATS.concat(PR().matx?MATX:[])}},
 temps:{cat:"Cements & temporary materials",t:"Temporisation materials",s:"Tick what you want set up.",wide:1,o:function(){return[["maxi","Maxi-Temp"],["clip","Clip"],["durlay","Durlay"],["tempbond","Tempbond NE"]]}},
 cems:{cat:"Cements & temporary materials",t:"Cements",s:"Tick the cements and primers you want set up.",wide:1,o:function(){var a=[["gic","GIC"],["p21","Panavia 21"],["p20","Panavia 2.0"],["nex","Nexus 3"]];if(RELYX.indexOf(sel.value)>-1)a.push(["rely","RelyX"]);a.push(["sil","Silane"]);return a}}
@@ -416,10 +417,10 @@ function list(id,key){var ks=Object.keys(st[key]);
  var h="";CATORDER.forEach(function(c){if(c==="@files")return;var g=ks.filter(function(n){return cat(dn(n))===c});if(g.length)h+='<li class="cathead" style="--cc:'+(CATCOL[c]||"#7F8C94")+'">'+c+'</li>'+g.map(function(n){return itemLi(n,key)}).join("")});$(id).innerHTML=h}
 
 function menuVisible(k){var p=PR();if((p.m||[]).indexOf(k)<0)return false;if(k==="clamp")return !!(p.clampAlways||st.core[RD]||st.opt[RD]);return true}
-function clampSug(){var set=[];teethOf({st:st}).forEach(function(k){var u=k.charAt(0)==="U",n=+k.slice(2),a=n>=6?(u?["14","14A","200"]:["7","8A","W8A","56"]):n>=4?["1","2","2A","26"]:["212","9"];a.forEach(function(x){if(set.indexOf(x)<0)set.push(x)})});return set}
+function clampSug(){var set=[];teethOf({st:st}).forEach(function(k){var u=k.charAt(0)==="U",n=+k.slice(2),a=n>=6?["A","Aw","K","FW/JW"]:n>=4?["Bw/Dw","G/Gw","E","Ew"]:["C","G/Gw"];a.forEach(function(x){if(set.indexOf(x)<0)set.push(x)})});return set}
 function drawMenus(){var h="";(PR().m||[]).forEach(function(k){if(!menuVisible(k))return;var M=MENUS[k],s=st.mm[k]||{};
  var sg=k==="clamp"?clampSug():[];
- h+='<section class="card" style="--cc:'+(CATCOL[M.cat]||"#7F8C94")+'"><h2>'+M.t+'</h2><p class="sub">'+M.s+(sg.length?' <strong class="sgt">Suggested for '+teethTxt({st:st})+': '+sg.join(", ")+'.</strong> Check against the tooth.':"")+'</p><div class="chips cc'+(M.wide?" wide":"")+'">'+M.o().map(function(x){return'<label'+(sg.indexOf(x[0])>-1?' class="sg"':"")+'><input type="checkbox" data-m="'+k+'" data-n="'+esc(x[0])+'"'+(s[x[0]]?" checked":"")+'><span>'+esc(M.ex&&x[0]!==M.ex?x[0]:x[1])+'</span>'+(sg.indexOf(x[0])>-1?'<em class="sgm">★</em>':"")+'</label>'}).join("")+'</div>'+(k==="mats"?'<p class="sub auto" id="auto-mats"></p>':"")+'</section>'});
+ h+='<section class="card" style="--cc:'+(CATCOL[M.cat]||"#7F8C94")+'"><h2>'+M.t+'</h2><p class="sub">'+M.s+(sg.length?' <strong class="sgt">Suggested for '+teethTxt({st:st})+': '+sg.join(", ")+'.</strong> Check against the tooth.':"")+'</p><div class="chips cc'+(M.wide?" wide":"")+'">'+M.o().map(function(x){return'<label'+(sg.indexOf(x[0])>-1?' class="sg"':"")+'><input type="checkbox" data-m="'+k+'" data-n="'+esc(x[0])+'"'+(s[x[0]]?" checked":"")+'><span>'+esc(M.ex&&x[0]!==M.ex?x[0]:x[1])+(x[2]?' <small class="cn">'+esc(x[2])+'</small>':'')+'</span>'+(sg.indexOf(x[0])>-1?'<em class="sgm">★</em>':"")+'</label>'}).join("")+'</div>'+(k==="mats"?'<p class="sub auto" id="auto-mats"></p>':"")+'</section>'});
  $("menus").innerHTML=h;updateAuto()}
 function menuLines(k){var M=MENUS[k],s=st.mm[k]||{};return M.o().filter(function(x){return s[x[0]]}).map(function(x){return x[1]})}
 
