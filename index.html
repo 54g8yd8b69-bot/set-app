@@ -68,6 +68,7 @@ h2{font-size:1.15rem;margin-bottom:4px}
 .lenrow input{width:18px;height:18px;accent-color:var(--teal)}
 .chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
 .chips.wide{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.fspec{display:block;font-size:.72em;font-weight:500;opacity:.8;font-variant-numeric:tabular-nums;line-height:1.1;margin-top:1px}
 .chips label{display:flex;gap:6px;align-items:center;justify-content:center;padding:8px 6px;border:1px solid var(--line);border-radius:8px;cursor:pointer;min-height:44px;text-align:center}
 .chips label:has(input:checked){background:var(--sel);border-color:var(--teal2)}
 .chips label.full{grid-column:1/-1}
@@ -436,12 +437,13 @@ function drawCones(){var p=PR(),c=$("conesCard");c.hidden=!p.cones;if(!p.cones){
  c.innerHTML=h}
 function coneLines(){var p=PR();if(!p.cones)return[];var sy=csys(st.cone.sys),r=[];if(sy)sy[1].forEach(function(x){var k=sy[2](x);if(st.cone.sel[k])r.push(k+" master GP cone")});if(st.cone.sel["@taper"])r.push("2% taper GP cones + accessory points");return r}
 function drawFiles(){var p=PR();$("filesCard").hidden=!p.files;if(!p.files){$("filesCard").innerHTML="";return}
- function chip(g,key,txt,col){return'<label'+fcStyle(col)+'><input type="checkbox" data-f="'+g+'" data-n="'+esc(key)+'"'+(st.f[g][key]?" checked":"")+'><span>'+esc(txt)+'</span></label>'}
+ var ROTSPEC={"ProTaper Gold S1":"18/.02","ProTaper Gold S2":"20/.04","ProTaper Gold F1":"20/.07","ProTaper Gold F2":"25/.08","ProTaper Gold F3":"30/.09","ProTaper Gold F4":"40/.06","ProTaper Gold F5":"50/.05","Reciproc R25":"25/.08","Reciproc R40":"40/.06","Reciproc R50":"50/.05","Reciproc Blue R25":"25/.08","Reciproc Blue R40":"40/.06","Reciproc Blue R50":"50/.05","WaveOne Gold Small":"20/.07","WaveOne Gold Primary":"25/.07","WaveOne Gold Medium":"35/.06","WaveOne Gold Large":"45/.05","ProTaper D1":"30/.09","ProTaper D2":"25/.08","ProTaper D3":"20/.07"};
+ function chip(g,key,txt,col,spec){return'<label'+fcStyle(col)+'><input type="checkbox" data-f="'+g+'" data-n="'+esc(key)+'"'+(st.f[g][key]?" checked":"")+'><span>'+esc(txt)+(spec?'<small class="fspec">'+esc(spec)+'</small>':'')+'</span></label>'}
  function len(k,arr){return'<div class="lenrow" role="group" aria-label="Length"><span>Length</span>'+arr.map(function(x){return'<label><input type="checkbox" data-fl="'+k+'" data-n="'+x+'"'+(st.fl[k][x]?" checked":"")+'><span>'+x+' mm</span></label>'}).join("")+'</div>'}
  var h='<h2>Endodontic files</h2>';
  function grp(g){return'<div class="fgroup"><div class="fhead"><h3>'+g.t+'</h3>'+len(g.k,g.l)+'</div><div class="chips">'+g.s.map(function(x){return chip(g.k,x,x,g.after?undefined:ISOSEQ[+x])}).join("")+'</div><div class="fper" id="per-'+g.k+'"></div></div>'}
  FG.forEach(function(g){if(!g.after)h+=grp(g)});
- h+='<div class="fgroup"><div class="fhead"><h3>Rotary files (tip size / taper)</h3>'+len("rot",ROTLEN)+'</div><div class="chips">'+ROTS.map(function(g){return'<div class="sys">'+g[0]+'</div>'+g[2].map(function(n){var c=chip("rot",g[1]+" "+n,n,ROTC[g[1]+" "+n]);return g[1]==="Reciproc Blue"?c.replace('class="fc"','class="fc rb"'):c}).join("")}).join("")+'</div><div class="fper" id="per-rot"></div></div>';
+ h+='<div class="fgroup"><div class="fhead"><h3>Rotary files (tip size / taper)</h3>'+len("rot",ROTLEN)+'</div><div class="chips">'+ROTS.map(function(g){return'<div class="sys">'+g[0]+'</div>'+g[2].map(function(n){var c=chip("rot",g[1]+" "+n,n,ROTC[g[1]+" "+n],ROTSPEC[g[1]+" "+n]);return g[1]==="Reciproc Blue"?c.replace('class="fc"','class="fc rb"'):c}).join("")}).join("")+'</div><div class="fper" id="per-rot"></div></div>';
  h+='<h3 class="fsub">Accessory files</h3>';FG.forEach(function(g){if(g.after)h+=grp(g)});
  h+='<div class="fgroup"><ul class="items">'+ACC.map(function(n){return itemLi(n,"acc")}).join("")+'</ul></div>';
  $("filesCard").innerHTML=h;FG.forEach(function(g){drawPer(g.k)});drawPer("rot")}

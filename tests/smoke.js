@@ -8,5 +8,8 @@ run({name:'Dental Set-App',fn:async()=>{
   await test('implant surgery uses the surgical kit',async()=>{const pg=await page('/set-app/#implant-placement');await pg.selectOption('#sys','Straumann');await pg.waitForTimeout(200);
     const all=JSON.stringify(await pg.evaluate(()=>secs()));expect(all.includes('Straumann surgical kit'),'surgical kit missing');await noErrors(pg)});
   await test('QR library is bundled and works',async()=>{const pg=await page('/set-app/');expect(await pg.evaluate(()=>{const q=qrcode(0,'M');q.addData('test');q.make();return q.getModuleCount()>0}),'QR failed');await noErrors(pg)});
+  await test('rotary file buttons show tip/taper, nurse list does not',async()=>{const pg=await page('/set-app/#root-canal-treatment-first-stage');await pg.waitForTimeout(200);
+    const btn=pg.locator('[data-n="WaveOne Gold Primary"]').locator('xpath=..');expect((await btn.innerText()).includes('25/.07'),'spec missing on button');
+    await pg.evaluate(()=>document.querySelector('[data-n="WaveOne Gold Primary"]').click());await pg.waitForTimeout(150);const all=JSON.stringify(await pg.evaluate(()=>secs()));expect(all.includes('WaveOne Gold Primary'),'file not in list');expect(!/\d\/\.0\d/.test(all),'spec leaked into list');await noErrors(pg)});
   await test('nurse list page opens',async()=>{const pg=await page('/set-app/list.html');await noErrors(pg)});
 }});
