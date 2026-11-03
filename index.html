@@ -84,6 +84,8 @@ button.sec{background:transparent;color:var(--teal);border:1px solid var(--teal)
 .meta{font-size:.9rem;color:var(--mute);margin:0 0 10px;min-height:1.4em}
 .sheet h3{font-size:1rem;margin:12px 0 6px;padding-bottom:3px;border-bottom:2px solid var(--teal2)}
 .sheet ul{list-style:none;margin:0;padding:0}
+.imgb{flex:none;width:44px;height:44px;padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;min-height:0}.imgb img{width:100%;height:100%;object-fit:cover;display:block}
+@media print{.imgb{display:none!important}}
 .sheet li{display:flex;gap:10px;align-items:center;padding:5px 0;border-bottom:1px dotted var(--line)}
 .sw{flex:none;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(0,0,0,.25);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .sheet li .rmx{margin-left:auto;flex:none;min-height:36px;min-width:36px;padding:0 8px;background:none;color:var(--mute);border:1px solid transparent;border-radius:8px;font-size:1.2rem;line-height:1}
@@ -286,6 +288,7 @@ button:active:not(:disabled){transform:scale(.97)}
     </div>
   </aside>
 </main>
+<dialog id="imgDlg" aria-labelledby="imgTitle"><h2 id="imgTitle"></h2><img alt="" style="max-width:100%;max-height:60vh;display:block;margin:8px auto;border-radius:10px"><button type="button" class="sec" onclick="this.closest('dialog').close()">Close</button></dialog>
 <dialog id="toothDlg" aria-labelledby="toothTitle">
   <h2 id="toothTitle">Select tooth</h2>
   <p class="sub">Palmer notation, as you face the patient (patient’s right on the left). Tap one or more teeth.</p>
@@ -460,6 +463,7 @@ function fileLines(){var r=[];FG.forEach(function(g){if(!g.after)r.push([g.n,fla
 function derived(){var p=PR(),d=[];function add(x){if(d.indexOf(x)<0)d.push(x)}
  if(st.core["LA cartridges"]||st.opt["LA cartridges"])add("Syringe handle");
  if(st.opt["MTA putty"]||st.opt["MTA powder and liquid"])add("MTA carriers");
+ if(st.opt["Sectional matrix (Palodent V3)"]||st.core["Sectional matrix (Palodent V3)"])add("Palodent V3 accessory kit (forceps, tweezers and rings)");
  if(st.opt["Composite"]){add("Etch");add("Bond");add("Flowable composite")}
  if((p.m||[]).indexOf("mats")>-1){var s=st.mm.mats||{},any=false;Object.keys(s).forEach(function(k){if(s[k])any=true});
   if(s.alg)add("Alginate tray adhesive");if(s.putty||s.lb||s.mb||s.hb)add("Silicone tray adhesive");if(s.imp)add("Polyether tray adhesive");
@@ -478,7 +482,7 @@ var CATS=[
 ["Cements & temporary materials",/temporary|provisional|maxi-temp|durlay|tempbond|\bclip\b|\birm\b|cavit|cement|panavia|nexus|silane|primer/i],
 ["Prosthetics & lab work",/occlude|labwork|lab work|shade guide|mould guide|articulating paper|face bow|gothic arch|articulator|fox|willis|pressure indicating|occlusal indicator|denture|reline|tissue conditioner|polishing kit|study casts/i],
 ["Impression & registration",/impression|impregum|memosil|putty|silicone|alginate|tray|wax|compound|green stick|zinc oxide|vaseline|bite registration|mixing/i],
-["Restorative materials",/floss|\bpost\b|alcohol|composite|\betch\b|\bbond\b|flowable|matrix|wedge|strips|ipr|mylar|biodentine|glass ionomer|\bgic\b|core build-up|ptfe|teflon|glycerine|pumice|prophy/i]
+["Restorative materials",/floss|\bpost\b|alcohol|composite|\betch\b|\bbond\b|flowable|matrix|palodent|wedge|strips|ipr|mylar|biodentine|glass ionomer|\bgic\b|core build-up|ptfe|teflon|glycerine|pumice|prophy/i]
 ],CATORDER=["Kits & instruments","Surgical consumables","Local anaesthetic","Rubber dam & isolation","Endodontic equipment & materials","@files","Handpieces, burs & equipment","Restorative materials","Impression & registration","Cements & temporary materials","Prosthetics & lab work","Implant components","Other"];
 function cat(x){if(CUSTCAT[x])return CUSTCAT[x];for(var i=0;i<CATS.length;i++)if(CATS[i][1].test(x))return CATS[i][0];return"Other"}
 function secsOne(){var p=PR(),E=[],all={},custom=st.custom.slice(),S=[];
@@ -540,7 +544,10 @@ function renderPT(){syncPT();var multi=PT.length>1;
 var SEQ=0;
 function fileCol(t){t=String(t).replace(/ · .*$/,"");var m=/^(?:K file|Hedstrom file|C\+ file) ISO (\d+)/.exec(t)||/^ISO (\d+) master GP cone/.exec(t),k;if(m)k=ISOSEQ[+m[1]];else k=ROTC[t.replace(/ (?:master GP cone|paper points)$/,"").replace(/ \([\d + ]+ mm\)$/,"")];return k&&ISOC[k]?ISOC[k]:null}
 function swatch(t){var c=fileCol(t);return c?'<i class="sw" style="background:'+c[0]+(c[2]?';border-color:'+c[2]:'')+'"></i>':""}
-function section(t,a){return'<h3>'+esc(t)+' ('+a.length+')</h3>'+(a.length?'<ul>'+a.map(function(x){return'<li style="--i:'+Math.min(SEQ++,14)+'"><label style="display:flex;gap:10px;align-items:center;flex:1;min-width:0"><input type="checkbox">'+swatch(x)+'<span>'+esc(x)+'</span></label><button type="button" class="rmx" data-rmx="'+esc(x)+'" aria-label="Remove '+esc(x)+' from this list" title="Remove from this list">×</button></li>'}).join("")+'</ul>':'<p class="empty">Nothing selected.</p>')}
+var IMGMAP={"Sectional matrix (Palodent V3)":"palodent-v3","Palodent V3 accessory kit (forceps, tweezers and rings)":"palodent-v3-accessory-kit"},IMGHAVE=[];
+function imgFor(t){var f=IMGMAP[String(t).replace(/ · .*$/,"")];return f&&IMGHAVE.indexOf(f)>-1?f:null}
+function showImg(name){var f=imgFor(name),d=document.getElementById("imgDlg");if(!f||!d)return;d.querySelector("h2").textContent=String(name).replace(/ · .*$/,"");d.querySelector("img").src="images/"+f+".jpg";d.querySelector("img").alt=name;if(d.showModal)d.showModal();else d.setAttribute("open","")}
+function section(t,a){return'<h3>'+esc(t)+' ('+a.length+')</h3>'+(a.length?'<ul>'+a.map(function(x){return'<li style="--i:'+Math.min(SEQ++,14)+'"><label style="display:flex;gap:10px;align-items:center;flex:1;min-width:0"><input type="checkbox">'+swatch(x)+'<span>'+esc(x)+'</span></label>'+(imgFor(x)?'<button type="button" class="imgb" data-img="'+esc(x)+'" aria-label="Show photo of '+esc(x)+'"><img src="images/'+imgFor(x)+'.jpg" alt="" loading="lazy"></button>':"")+'<button type="button" class="rmx" data-rmx="'+esc(x)+'" aria-label="Remove '+esc(x)+' from this list" title="Remove from this list">×</button></li>'}).join("")+'</ul>':'<p class="empty">Nothing selected.</p>')}
 function fmtDate(){var d=$("date").value;return d?new Date(d+"T12:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short",year:"numeric"}):""}
 function meta(){return[PT.length>1&&("Patient "+(pa+1)),procNames(),anyImpl()&&$("sys").value&&("System: "+$("sys").value),$("who").value&&("Clinician: "+$("who").value),$("room").value&&("Room: "+$("room").value),fmtDate()].filter(Boolean).join(", ")}
 function panel(j,act){return inPatient(j,function(){SEQ=0;var h='<div class="pl'+(act?" on":"")+'" data-pj="'+j+'"><p class="meta">'+esc(meta())+'</p>'+(anyImpl()&&!$("sys").value?'<p class="empty">Choose an implant system to add its prosthetic kit.</p>':"")+secs().map(function(x){return section(x[0],x[1])}).join("");if(h.indexOf("<h3>")<0)h+='<p class="empty">Nothing selected.</p>';var rm={};V.forEach(function(e){var q=e.st.hide||{};Object.keys(q).forEach(function(k){rm[k]=q[k]})});var ks=Object.keys(rm);h+='<div class="freeadd"><input type="text" class="freein" placeholder="Add anything else, e.g. spare bur" aria-label="Add a free text item to this list"><button type="button" data-freeadd="1">Add item</button></div>';if(ks.length)h+='<div class="removed"><span>Removed from this list:</span> '+ks.map(function(k){return'<button type="button" class="sec" data-restore="'+esc(k)+'" aria-label="Put back '+esc(rm[k])+'">'+esc(rm[k])+' ↩</button>'}).join("")+'</div>';return h+"</div>"})}
@@ -577,7 +584,8 @@ $("addproc").onclick=addProc;
 function freeAdd(pl,j){var inp=pl.querySelector(".freein"),v=inp.value.trim();if(!v)return;var e=j===pa?V[vi]:PT[j].V[PT[j].vi];e.st.custom=e.st.custom||[];e.st.custom.push(v);sheet();var n=$("out").querySelector('.pl[data-pj="'+j+'"] .freein');if(n)n.focus()}
 $("out").addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList&&e.target.classList.contains("freein")){e.preventDefault();var pl=e.target.closest(".pl");freeAdd(pl,+pl.dataset.pj)}});
 $("out").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var pl=b.closest(".pl");if(!pl)return;var j=+pl.dataset.pj;
- if(b.dataset.freeadd!==undefined){freeAdd(pl,j)}
+ if(b.dataset.img!==undefined){showImg(b.dataset.img)}
+ else if(b.dataset.freeadd!==undefined){freeAdd(pl,j)}
  else if(b.dataset.rmx!==undefined){var base=b.dataset.rmx.replace(/ · .*$/,"");PT[j].V.forEach(function(x){x.st.hide=x.st.hide||{};x.st.hide[base.toLowerCase()]=base});sheet()}
  else if(b.dataset.restore!==undefined){PT[j].V.forEach(function(x){if(x.st.hide)delete x.st.hide[b.dataset.restore]});sheet()}});
 $("filesCard").addEventListener("click",function(e){var b=e.target.closest("button[data-fr]");if(!b)return;delete st.fo[b.dataset.fr][b.dataset.fx];drawPer(b.dataset.fr);sheet()});$("addpt").onclick=addPatient;

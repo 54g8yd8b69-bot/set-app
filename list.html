@@ -25,6 +25,8 @@ li label{display:flex;gap:12px;align-items:center;padding:11px 2px;border-bottom
 li:last-child label{border-bottom:0}
 .pnl{display:none}.pnl.on{display:block}
 #list.single .pnl{display:block}
+.imgb{flex:none;width:44px;height:44px;padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;min-height:0}.imgb img{width:100%;height:100%;object-fit:cover;display:block}
+@media print{.imgb{display:none!important}}
 .sw{flex:none;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(0,0,0,.25);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 li input{width:24px;height:24px;accent-color:var(--teal);flex:none}
 li.done span{text-decoration:line-through;color:var(--mute)}
@@ -73,6 +75,9 @@ var ISOSEQ={6:"pink",8:"grey",10:"purple",15:"white",20:"yellow",25:"red",30:"bl
 var ROTC={"ProTaper Gold S1":"purple","ProTaper Gold S2":"white","ProTaper Gold F1":"yellow","ProTaper Gold F2":"red","ProTaper Gold F3":"blue","ProTaper Gold F4":"black","ProTaper Gold F5":"yellow","Reciproc R25":"red","Reciproc R40":"black","Reciproc R50":"yellow","WaveOne Gold Small":"yellow","WaveOne Gold Primary":"red","WaveOne Gold Medium":"green","WaveOne Gold Large":"white"};
 function fileCol(t){t=String(t).replace(/ · .*$/,"");var m=/^(?:K file|Hedstrom file|C\+ file) ISO (\d+)/.exec(t)||/^ISO (\d+) master GP cone/.exec(t),k;if(m)k=ISOSEQ[+m[1]];else k=ROTC[t.replace(/ (?:master GP cone|paper points)$/,"").replace(/ \([\d + ]+ mm\)$/,"")];return k&&ISOC[k]?ISOC[k]:null}
 function swatch(t){var c=fileCol(t);return c?'<i class="sw" style="background:'+c[0]+(c[2]?';border-color:'+c[2]:'')+'"></i>':""}
+var IMGMAP={"Sectional matrix (Palodent V3)":"palodent-v3","Palodent V3 accessory kit (forceps, tweezers and rings)":"palodent-v3-accessory-kit"},IMGHAVE=[];
+function imgFor(t){var f=IMGMAP[String(t).replace(/ · .*$/,"")];return f&&IMGHAVE.indexOf(f)>-1?f:null}
+function showImg(name){var f=imgFor(name),d=document.getElementById("imgDlg");if(!f||!d)return;d.querySelector("h2").textContent=String(name).replace(/ · .*$/,"");d.querySelector("img").src="images/"+f+".jpg";d.querySelector("img").alt=name;if(d.showModal)d.showModal();else d.setAttribute("open","")}
 function el(t,c,s){var e=document.createElement(t);if(c)e.className=c;if(s!==undefined)e.textContent=s;return e}
 function fmt(d){if(!d)return"";var x=new Date(d+"T12:00");return isNaN(x)?String(d):x.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short",year:"numeric"})}
 function key(h){var n=5381;for(var i=0;i<h.length;i++)n=((n<<5)+n+h.charCodeAt(i))|0;return"ticks:"+(n>>>0)}
@@ -87,7 +92,7 @@ function secCards(sections,pi,parent){sections.forEach(function(sec,i){var items
   var card=el("section","card"),ul=el("ul");card.appendChild(el("h2","",String(sec[0])+" ("+items.length+")"));
   items.forEach(function(t,j){var id=(pi===null?"":pi+":")+i+"-"+j,li=el("li"),lb=el("label"),cb=el("input"),sp=el("span","",String(t)),c=fileCol(String(t)),sw=null;if(c){sw=el("i","sw");sw.style.background=c[0];if(c[2])sw.style.borderColor=c[2]}cb.type="checkbox";cb.checked=!!ticks[id];li.className=cb.checked?"done":"";
    cb.onchange=function(){cb.classList.remove("pop");void cb.offsetWidth;cb.classList.add("pop");ticks[id]=cb.checked;li.className=cb.checked?"done":"";wr(K,ticks);count()};
-   lb.appendChild(cb);if(sw)lb.appendChild(sw);lb.appendChild(sp);li.appendChild(lb);ul.appendChild(li)});
+   lb.appendChild(cb);if(sw)lb.appendChild(sw);lb.appendChild(sp);li.appendChild(lb);var imf=imgFor(t);if(imf){var ib=el("button","imgb");ib.type="button";ib.setAttribute("aria-label","Show photo of "+t);var im=el("img");im.src="images/"+imf+".jpg";im.alt="";im.loading="lazy";ib.appendChild(im);ib.onclick=function(){showImg(t)};li.appendChild(ib)}ul.appendChild(li)});
   card.appendChild(ul);parent.appendChild(card)})}
 function setTab(i){PA=i;document.querySelectorAll("#list .pnl").forEach(function(p,j){p.classList.toggle("on",j===i)});document.querySelectorAll("#tabs button").forEach(function(b,j){b.classList.toggle("on",j===i);b.setAttribute("aria-selected",j===i)});count()}
 async function show(){var h=(location.hash||"").slice(1),d;$("tabs").hidden=true;$("list").className="";
@@ -108,5 +113,6 @@ $("reset").onclick=function(){ticks={};wr(K,ticks);show()};
 window.addEventListener("hashchange",show);
 show();
 </script>
+<dialog id="imgDlg" aria-labelledby="imgTitle"><h2 id="imgTitle"></h2><img alt="" style="max-width:100%;max-height:60vh;display:block;margin:8px auto;border-radius:10px"><button type="button" class="sec" onclick="this.closest('dialog').close()">Close</button></dialog>
 </body>
 </html>
